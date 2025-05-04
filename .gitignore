@@ -1,0 +1,13 @@
+/.env
+
+/api/vendor/
+/api/var/
+/api/.env.local
+
+/frontend/node_modules/
+/frontend/dist/
+/frontend/.vite/
+/frontend/.env.local
+
+*.log
+docker-compose.override.yml
