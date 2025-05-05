@@ -1,0 +1,11 @@
+@use './variables' as vars;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: vars.$font-sans;
+}

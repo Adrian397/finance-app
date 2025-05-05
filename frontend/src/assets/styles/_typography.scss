@@ -1,0 +1,48 @@
+@use './variables' as vars;
+
+$text-presets: (
+        1: (
+                size: vars.$text-1-size,
+                lh: vars.$text-1-line-height,
+                wt: vars.$text-1-weight
+        ),
+        2: (
+                size: vars.$text-2-size,
+                lh: vars.$text-2-line-height,
+                wt: vars.$text-2-weight
+        ),
+        3: (
+                size: vars.$text-3-size,
+                lh: vars.$text-3-line-height,
+                wt: vars.$text-3-weight
+        ),
+        4: (
+                size: vars.$text-4-size,
+                lh: vars.$text-4-line-height,
+                wt: vars.$text-4-weight
+        ),
+        4b: (
+                size: vars.$text-4-size,
+                lh: vars.$text-4-line-height,
+                wt: vars.$text-4b-weight
+        ),
+        5: (
+                size: vars.$text-5-size,
+                lh: vars.$text-5-line-height,
+                wt: vars.$text-5-weight
+        ),
+        5b: (
+                size: vars.$text-5-size,
+                lh: vars.$text-5-line-height,
+                wt: vars.$text-5b-weight
+        )
+);
+
+@each $key, $vals in $text-presets {
+  .text-preset-#{$key} {
+    font-size: map-get($vals, size);
+    line-height: map-get($vals, lh);
+    font-weight: map-get($vals, wt);
+    letter-spacing: 0;
+  }
+}
