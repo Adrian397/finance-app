@@ -2,7 +2,6 @@ services:
   db:
     image: mysql:8.0
     container_name: finance-db
-    restart: always
     env_file:
       - .env
     environment:
@@ -14,22 +13,18 @@ services:
       - db_data:/var/lib/mysql
     ports:
       - "3306:3306"
-
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: finance-phpmyadmin
-    restart: always
     env_file:
       - .env
     ports:
       - "${PMA_PORT}:80"
-
   api:
     build:
       context: ./api
       dockerfile: Dockerfile
     container_name: finance-api
-    restart: unless-stopped
     volumes:
       - ./api:/var/www/html
     ports:
@@ -38,13 +33,11 @@ services:
       - db
     env_file:
       - .env
-
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: finance-frontend
-    restart: unless-stopped
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -52,6 +45,5 @@ services:
       - "80:5173"
     environment:
       - CHOKIDAR_USEPOLLING=true
-
 volumes:
   db_data:
