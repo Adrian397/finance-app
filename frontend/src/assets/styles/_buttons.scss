@@ -1,0 +1,61 @@
+@use './variables' as vars;
+
+.btn {
+  padding: vars.$space-md;
+  border-radius: vars.$space-xs;
+  font-family: vars.$font-sans;
+  font-size: vars.$text-4-size;
+  line-height: vars.$text-4-line-height;
+  font-weight: vars.$text-4b-weight;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: vars.$gray-900;
+  color: vars.$white;
+  border-color: vars.$gray-900;
+
+  &:hover {
+    background-color: vars.$gray-500;
+    border-color: vars.$gray-500;
+  }
+}
+
+.btn-secondary {
+  background-color: vars.$gray-100;
+  color: vars.$gray-900;
+  border-color: vars.$gray-100;
+
+  &:hover {
+    background-color: vars.$white;
+    border-color: vars.$beige-500;
+  }
+}
+
+.btn-tertiary {
+  background-color: transparent;
+  color: vars.$gray-500;
+  border: none;
+  font-family: vars.$font-sans;
+  font-size: vars.$text-4-size;
+  font-weight: vars.$text-4-weight;
+  line-height: vars.$text-4-line-height;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    color: vars.$gray-900;
+  }
+}
+
+.btn-destroy {
+  background-color: vars.$red;
+  color: vars.$white;
+  border-color: vars.$red;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+}
