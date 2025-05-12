@@ -1,26 +1,40 @@
-# PHP + extensions
 FROM php:8.1-fpm
 
+ARG USER_ID
+ARG GROUP_ID
+
+# Install system dependencies for PHP extensions, Nginx, and Supervisor
 RUN apt-get update \
- && apt-get install -y git zip unzip libicu-dev libonig-dev libxml2-dev \
+ && apt-get install -y git zip unzip libicu-dev libonig-dev libxml2-dev nginx supervisor \
  && docker-php-ext-install pdo_mysql intl opcache \
  && rm -rf /var/lib/apt/lists/*
 
-# Bring in Composer
+RUN sed -i 's#;log_level = notice#log_level = notice#g' /usr/local/etc/php-fpm.conf
+
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+COPY ./docker/nginx/default.conf /etc/nginx/sites-available/default
+RUN rm -f /etc/nginx/sites-enabled/default && \
+    ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+
+RUN echo "[supervisord]\nnodaemon=true\nuser=root\n\n[program:php-fpm]\ncommand=/usr/local/sbin/php-fpm -F\nautostart=true\nautorestart=true\npriority=5\n\n[program:nginx]\ncommand=/usr/sbin/nginx -g 'daemon off;'\nautostart=true\nautorestart=true\npriority=10\n" > /etc/supervisor/conf.d/app.conf
 
 WORKDIR /var/www/html
 
-# 1) Copy composer manifests (for caching)
-COPY composer.json composer.lock ./
-
-# 2) Copy *all* your Symfony code (including bin/console)
+# Copy all application files from the build context (your ./api directory)
+# This includes composer.json, composer.lock, bin/console, src/, config/, etc.
 COPY . .
 
-# 3) Now install dependencies (auto-scripts can run)
-RUN composer install --no-interaction --optimize-autoloader \
- && chown -R www-data:www-data var
+# Install dependencies (now that all files, including bin/console, are present)
+# --no-dev should be used for production builds
+RUN composer install --no-interaction --optimize-autoloader --no-progress --prefer-dist
 
-EXPOSE 8000
+# Set ownership and permissions
+# Create necessary log directories for Nginx and ensure www-data can write to them and Symfony's var/cache and var/log
+RUN mkdir -p /var/log/nginx /var/www/html/var/cache /var/www/html/var/log \
+ && chown -R www-data:www-data /var/www/html /var/log/nginx \
+ && chmod -R 775 /var/www/html/var/cache /var/www/html/var/log
 
-CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]
+EXPOSE 80
+
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/app.conf"]
