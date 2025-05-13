@@ -7,6 +7,10 @@
 
   label {
     color: vars.$gray-500;
+
+    &.input-error {
+      color: vars.$red;
+    }
   }
 
   &__wrapper {
@@ -22,6 +26,10 @@
       font-size: vars.$text-4-size;
       line-height: vars.$text-4-line-height;
       font-weight: vars.$text-4-weight;
+
+      &.input-error {
+        border-color: vars.$red;
+      }
 
       &:hover {
         border-color: vars.$gray-500;

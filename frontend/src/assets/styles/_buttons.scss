@@ -17,9 +17,14 @@
   color: vars.$white;
   border-color: vars.$gray-900;
 
-  &:hover {
+  &:hover,
+  &:disabled {
     background-color: vars.$gray-500;
     border-color: vars.$gray-500;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
   }
 }
 
@@ -54,7 +59,7 @@
   background-color: vars.$red;
   color: vars.$white;
   border-color: vars.$red;
-  
+
   &:hover {
     opacity: 0.8;
   }

@@ -11,6 +11,7 @@ type Props = {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   helper?: string;
   placeholder?: string;
+  error?: string | null | boolean;
 };
 
 export const Input = ({
@@ -21,17 +22,21 @@ export const Input = ({
   helper,
   onChange,
   placeholder,
+  error,
 }: Props): ReactElement => {
   const [visible, setVisible] = useState(false);
   const isPassword = type === "password";
-
+  const hasError = !!error;
   const togglePasswordVisibility = () => {
     setVisible((v) => !v);
   };
 
   return (
     <div className="input-group">
-      <label className="text-preset-5b" htmlFor={name}>
+      <label
+        className={`text-preset-5b ${error ? "input-error" : ""}`}
+        htmlFor={name}
+      >
         {label}
       </label>
       <div className="input-group__wrapper">
@@ -41,7 +46,8 @@ export const Input = ({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className={`input-group__wrapper--control ${isPassword ? "is-password" : ""}`}
+          className={`input-group__wrapper--control ${isPassword ? "is-password" : ""} ${hasError ? "input-error" : ""}`}
+          aria-invalid={hasError}
         />
         {isPassword && (
           <button

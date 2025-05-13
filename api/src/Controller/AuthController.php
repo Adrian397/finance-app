@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AuthController extends AbstractController
@@ -42,19 +43,33 @@ class AuthController extends AbstractController
         $user = new User();
         $user->setName($data['name'] ?? null);
         $user->setEmail($data['email'] ?? null);
+        $password = $data['password'] ?? null;
 
-        $errors = $validator->validate($user, null, ['Default', 'registration']);
-        if (count($errors) > 0) {
-            $errorMessages = [];
-            foreach ($errors as $error) {
-                $errorMessages[$error->getPropertyPath()][] = $error->getMessage();
+        $allErrorMessages = [];
+
+        $userViolations = $validator->validate($user, null, ['Default', 'registration']);
+        if (count($userViolations) > 0) {
+            foreach ($userViolations as $violation) {
+                $allErrorMessages[$violation->getPropertyPath()][] = $violation->getMessage();
             }
-            return $this->json(['errors' => $errorMessages], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $password = $data['password'] ?? null;
-        if (empty($password)) {
-            return $this->json(['errors' => ['password' => ['Password cannot be empty.']]], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+        $passwordConstraints = [
+            new Assert\NotBlank(['message' => 'Password should not be empty.']),
+            new Assert\Length([
+                'min' => 8,
+                'minMessage' => 'Your password must be at least {{ limit }} characters long.',
+            ]),
+        ];
+        $passwordViolations = $validator->validate($password, $passwordConstraints);
+        if (count($passwordViolations) > 0) {
+            foreach ($passwordViolations as $violation) {
+                $allErrorMessages['password'][] = $violation->getMessage();
+            }
+        }
+
+        if (!empty($allErrorMessages)) {
+            return $this->json(['errors' => $allErrorMessages], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $hashedPassword = $passwordHasher->hashPassword($user, $password);
