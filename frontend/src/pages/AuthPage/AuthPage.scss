@@ -2,16 +2,26 @@
 
 .auth-page {
   background-color: vars.$beige-100;
-  padding: vars.$space-md-plus;
   height: 100%;
   display: flex;
-  gap: vars.$space-md-plus;
+  flex-direction: column;
+  padding: 0;
+
+  @media(min-width: vars.$breakpoint-lg) {
+    padding: vars.$space-md-plus;
+    flex-direction: row;
+    gap: vars.$space-md-plus;
+  }
 
   .auth-form {
-    padding: vars.$space-xl;
+    padding: vars.$space-lg vars.$space-md-plus;
     background-color: vars.$white;
     border-radius: 12px;
     width: 560px;
+
+    @media(min-width: vars.$breakpoint-sm) {
+      padding: vars.$space-xl;
+    }
 
     &__inputs {
       display: flex;
@@ -64,18 +74,36 @@
   }
 
   &__illustration {
-    background: url("../../assets/images/auth/illustration.svg") no-repeat center;
     display: flex;
-    flex-direction: column;
-    align-items: start;
-    justify-content: space-between;
-    border-radius: 12px;
-    padding: vars.$space-2xl;
-    height: 100%;
-    max-width: 560px;
+    justify-content: center;
+    background: vars.$gray-900;
+    border-radius: 0 0 8px 8px;
+    max-width: 100%;
+    height: max-content;
+    padding: vars.$space-lg;
+
+    @media(min-width: vars.$breakpoint-lg) {
+      background: url("../../assets/images/auth/illustration.svg") no-repeat center;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: vars.$space-md;
+      align-items: start;
+      border-radius: 12px;
+      height: 100%;
+      max-width: 560px;
+    }
+
+    @media(min-width: vars.$breakpoint-xl) {
+      padding: vars.$space-2xl;
+    }
 
     &--text {
       color: white;
+      display: none;
+
+      @media(min-width: vars.$breakpoint-lg) {
+        display: block;
+      }
 
       h2 {
         margin-bottom: vars.$space-lg;
@@ -88,5 +116,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 0 vars.$space-md;
+
+    @media(min-width: vars.$breakpoint-lg) {
+      margin: 0;
+    }
   }
 }
