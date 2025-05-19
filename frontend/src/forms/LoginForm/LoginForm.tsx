@@ -10,6 +10,8 @@ import type { ApiServiceError } from "@/utils/apiUtils.ts";
 import { useAuthStore } from "@/stores/authStore.ts";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { ROUTE_PATHS } from "@/utils/routePaths.ts";
 
 type Props = {
   onModeChange: () => void;
@@ -23,6 +25,7 @@ export const LoginForm = ({ onModeChange }: Props): ReactElement => {
     null,
   );
 
+  const navigate = useNavigate();
   const setToken = useAuthStore((state) => state.setToken);
 
   const clearError = () => {
@@ -40,6 +43,7 @@ export const LoginForm = ({ onModeChange }: Props): ReactElement => {
       toast.success("Login successful!");
       setToken(data.token);
       clearError();
+      navigate(ROUTE_PATHS.OVERVIEW);
     },
     onError: (error) => {
       setGeneralLoginError(

@@ -1,0 +1,121 @@
+@use '../../assets/styles/variables' as vars;
+
+.sidebar {
+  background-color: vars.$gray-900;
+  width: 300px;
+  height: 100%;
+  border-radius: 0 16px 16px 0;
+  padding-top: vars.$space-2xl;
+  padding-right: vars.$space-lg;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
+
+  &--minimized {
+    width: 88px;
+
+    .sidebar__minimize-btn {
+      img {
+        transform: rotate(180deg);
+        margin-right: 0;
+      }
+    }
+
+    .sidebar__nav-link {
+      width: 80px;
+
+      img {
+        margin-right: 0;
+      }
+    }
+
+
+  }
+
+  &__header {
+    margin-bottom: 64px;
+    padding-left: vars.$space-xl;
+  }
+
+  &__footer {
+    margin-top: auto;
+    margin-bottom: 60px;
+  }
+
+  &__minimize-btn {
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    padding: vars.$space-md vars.$space-xl;
+    color: vars.$gray-300;
+    border: 0;
+    cursor: pointer;
+    height: 56px;
+    width: 100%;
+    transition: width 0.3s ease;
+
+    span {
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    img {
+      margin-right: vars.$space-md;
+    }
+  }
+
+  &__logout-btn {
+    margin-top: vars.$space-md;
+    color: vars.$red;
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    padding: vars.$space-md vars.$space-xl;
+    border: 0;
+    height: 56px;
+    cursor: pointer;
+
+    img {
+      width: 20px;
+      height: 20px;
+      transform: rotate(-180deg);
+      margin-right: vars.$space-md;
+      filter: brightness(0) saturate(100%) invert(29%) sepia(59%) saturate(1224%) hue-rotate(330deg) brightness(107%) contrast(93%);
+    }
+  }
+
+  &__nav-link {
+    padding: vars.$space-md vars.$space-xl;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    text-decoration: none;
+    color: vars.$gray-300;
+    position: relative;
+    height: 56px;
+    width: 100%;
+    transition: width 0.3s ease;
+
+    .sidebar__nav-label {
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    img {
+      margin-right: vars.$space-md;
+    }
+
+    &.active {
+      background-color: vars.$beige-100;
+      border-radius: 0 12px 12px 0;
+      font-weight: bold;
+      color: vars.$gray-900;
+      border-left: 4px solid vars.$green;
+      padding-left: vars.$space-lg-plus;
+
+      img {
+        filter: brightness(0) saturate(100%) invert(37%) sepia(11%) saturate(2424%) hue-rotate(128deg) brightness(104%) contrast(83%);
+      }
+    }
+  }
+}
