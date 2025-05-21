@@ -1,4 +1,15 @@
+@use '../assets/styles/variables' as vars;
+
 .layout {
   height: 100%;
   display: flex;
+  background-color: vars.$beige-100;
+}
+
+.outlet {
+  padding: vars.$space-xl vars.$space-2xl;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 }

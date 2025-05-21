@@ -1,0 +1,340 @@
+@use '../../assets/styles/variables' as vars;
+
+.overview-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+
+  &__heading {
+    margin-bottom: vars.$space-xl;
+  }
+
+  &__content {
+    display: flex;
+    gap: vars.$space-lg;
+    overflow: hidden;
+
+    &--left,
+    &--right {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &--left {
+      flex: 3;
+    }
+
+    &--right {
+      flex: 2;
+    }
+  }
+
+  &__summary {
+    display: flex;
+    align-items: center;
+    gap: vars.$space-lg;
+    margin-bottom: vars.$space-xl;
+
+    &--balance {
+      background-color: vars.$gray-900;
+
+      h2 {
+        color: vars.$white;
+      }
+
+      p {
+        color: vars.$white;
+      }
+    }
+
+    &--income,
+    &--expenses {
+      background-color: vars.$white;
+
+      h2 {
+        color: vars.$gray-500;
+      }
+
+      p {
+        color: vars.$gray-900;
+      }
+    }
+
+    &--balance,
+    &--income,
+    &--expenses {
+      flex: 1;
+      padding: vars.$space-lg;
+      border-radius: 12px;
+
+      h2 {
+        margin-bottom: vars.$space-sm;
+        display: block;
+      }
+    }
+  }
+
+  &__pots {
+    padding: vars.$space-xl;
+    background-color: vars.$white;
+    border-radius: 12px;
+    margin-bottom: vars.$space-lg;
+
+    &--header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: vars.$space-md-plus;
+
+      a {
+        text-decoration: none;
+      }
+
+      h2 {
+        color: vars.$gray-900;
+      }
+    }
+
+    &--saved {
+      &-wrapper {
+        display: flex;
+        align-items: flex-start;
+        gap: vars.$space-md-plus;
+      }
+
+      &-total {
+        display: flex;
+        align-items: center;
+        gap: vars.$space-md;
+        border-radius: 12px;
+        background-color: vars.$beige-100;
+        padding: vars.$space-md-plus vars.$space-md;
+        min-width: 247px;
+
+        span {
+          color: vars.$gray-500;
+          margin-bottom: vars.$space-sm;
+          display: inline-block;
+        }
+
+        p {
+          color: vars.$gray-900;
+        }
+      }
+
+      &-details {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: vars.$space-md;
+        flex: 1;
+
+        &-pot {
+          display: flex;
+          align-items: center;
+          gap: vars.$space-md;
+
+          .decoration {
+            width: 4px;
+            height: 100%;
+            border-radius: 8px;
+            background-color: vars.$cyan;
+          }
+
+          span {
+            color: vars.$gray-500;
+            margin-bottom: vars.$space-xxs;
+            display: inline-block;
+          }
+
+          p {
+            color: vars.$gray-900;
+          }
+        }
+      }
+    }
+  }
+
+  &__transactions {
+    background-color: vars.$white;
+    border-radius: 12px;
+    padding: vars.$space-xl;
+    overflow-y: auto;
+    flex: 1;
+
+
+    &--header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: vars.$space-xl;
+
+      a {
+        text-decoration: none;
+      }
+
+      h2 {
+        color: vars.$gray-900;
+      }
+    }
+
+    &--list {
+      display: flex;
+      flex-direction: column;
+
+
+      &__item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &:not(:last-child) {
+          padding-bottom: vars.$space-md-plus;
+          border-bottom: 1px solid vars.$gray-100;
+        }
+
+        &:not(:first-child) {
+          padding-top: vars.$space-md-plus;
+        }
+
+        &-avatar {
+          display: flex;
+          align-items: center;
+          gap: vars.$space-md;
+
+          img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+          }
+
+          span {
+            color: vars.$gray-900;
+          }
+        }
+
+        &-transaction {
+          span {
+            margin-bottom: vars.$space-xs;
+            display: inline-block;
+            color: vars.$green;
+          }
+
+          p {
+            color: vars.$gray-500;
+          }
+        }
+      }
+    }
+  }
+
+  &__budgets {
+    background-color: vars.$white;
+    border-radius: 12px;
+    padding: vars.$space-xl;
+    margin-bottom: vars.$space-lg;
+
+    &--header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: vars.$space-xl;
+
+      a {
+        text-decoration: none;
+      }
+
+      h2 {
+        color: vars.$gray-900;
+      }
+    }
+
+
+    &--chart {
+      &-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+      }
+
+      &-container {
+        width: 240px;
+        height: 240px;
+
+        .recharts-surface {
+          border-radius: 50%;
+        }
+      }
+
+      &-legend {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: vars.$space-md;
+
+        &-pot {
+          display: flex;
+          align-items: center;
+          gap: vars.$space-md;
+
+          .decoration {
+            width: 4px;
+            height: 100%;
+            border-radius: 8px;
+            background-color: vars.$cyan;
+          }
+
+          span {
+            color: vars.$gray-500;
+            margin-bottom: vars.$space-xxs;
+            display: inline-block;
+          }
+
+          p {
+            color: vars.$gray-900;
+          }
+        }
+      }
+    }
+  }
+
+  &__bills {
+    background-color: vars.$white;
+    padding: vars.$space-xl;
+    border-radius: 12px;
+    overflow-y: auto;
+    flex: 1;
+
+    &--header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: vars.$space-xl;
+
+      a {
+        text-decoration: none;
+      }
+
+      h2 {
+        color: vars.$gray-900;
+      }
+    }
+
+    &--list {
+      display: flex;
+      flex-direction: column;
+      gap: vars.$space-sm;
+
+      &-item {
+        display: flex;
+        justify-content: space-between;
+        border-radius: 8px;
+        padding: vars.$space-md-plus vars.$space-md;
+        background-color: vars.$beige-100;
+        border-left: 4px solid vars.$green;
+
+        span:nth-of-type(1) {
+          color: vars.$gray-500;
+        }
+
+        span:nth-of-type(2) {
+          color: vars.$gray-900;
+        }
+      }
+    }
+  }
+}

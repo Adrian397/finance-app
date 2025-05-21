@@ -49,6 +49,9 @@
   line-height: vars.$text-4-line-height;
   transition: all 0.3s ease;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: vars.$space-sm;
 
   &:hover {
     color: vars.$gray-900;
