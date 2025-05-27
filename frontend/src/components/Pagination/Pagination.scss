@@ -1,0 +1,68 @@
+@use '../../assets/styles/variables' as vars;
+
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  button {
+    background-color: transparent;
+    border: 1px solid vars.$beige-500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: vars.$space-md;
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: vars.$space-md;
+    height: 40px;
+    width: 94px;
+    transition: background-color 0.3s ease;
+
+    &:disabled {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    &:hover {
+      background-color: vars.$beige-500;
+      color: vars.$white;
+      border-color: vars.$beige-500;
+
+      img {
+        filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(104deg) brightness(107%) contrast(101%);
+      }
+    }
+
+  }
+
+  &__pages {
+    display: flex;
+    align-items: center;
+    gap: vars.$space-xs;
+
+    button {
+      width: 40px;
+      height: 40px;
+      transition: background-color 0.3s ease;
+
+      &.active {
+        background-color: vars.$gray-900;
+        color: vars.$white;
+        border-color: vars.$gray-900;
+      }
+
+      &:not(.active):hover {
+        background-color: vars.$beige-500;
+        color: vars.$white;
+        border-color: vars.$beige-500;
+      }
+    }
+  }
+}

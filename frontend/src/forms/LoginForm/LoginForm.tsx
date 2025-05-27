@@ -71,6 +71,7 @@ export const LoginForm = ({ onModeChange }: Props): ReactElement => {
           type="email"
           name="email"
           label="Email"
+          id="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           error={hasErrorForInputs}
@@ -79,6 +80,7 @@ export const LoginForm = ({ onModeChange }: Props): ReactElement => {
           type="password"
           name="password"
           label="Password"
+          id="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           error={hasErrorForInputs}
