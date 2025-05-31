@@ -17,6 +17,11 @@ export const Budgets = () => {
   const desiredCenterCircleDiameter = 187;
   const centerCircleRadius = desiredCenterCircleDiameter / 2;
 
+  const maxRowsPerColumn = 4;
+  const numberOfItems = budgetData.length;
+  const numberOfColumns = Math.ceil(numberOfItems / maxRowsPerColumn);
+  const gridTemplateColumns = `repeat(${numberOfColumns}, 1fr)`;
+
   return (
     <section className="overview-page__budgets">
       <div className="overview-page__budgets--header">
@@ -84,7 +89,14 @@ export const Budgets = () => {
             </PieChart>
           </ResponsiveContainer>
         </div>
-        <div className="overview-page__budgets--chart-legend">
+        <div
+          className="overview-page__budgets--chart-legend"
+          style={{
+            gridTemplateColumns,
+            gridAutoFlow: "column",
+            gridTemplateRows: `repeat(${maxRowsPerColumn}, auto)`,
+          }}
+        >
           {budgetData.map((entry, index) => (
             <div
               className="overview-page__budgets--chart-legend-pot"

@@ -3,7 +3,6 @@ import { createRoot } from "react-dom/client";
 import "./index.scss";
 import App from "./App.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { BrowserRouter } from "react-router-dom";
@@ -34,7 +33,7 @@ createRoot(document.getElementById("root")!).render(
           pauseOnHover
           theme="dark"
         />
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/*<ReactQueryDevtools initialIsOpen={false} />*/}
       </QueryClientProvider>
     </BrowserRouter>
   </StrictMode>,

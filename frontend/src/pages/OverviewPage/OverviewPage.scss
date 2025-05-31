@@ -15,6 +15,10 @@
     gap: vars.$space-lg;
     overflow: hidden;
 
+    @media(max-width: 1250px) {
+      flex-direction: column;
+    }
+
     &--left,
     &--right {
       display: flex;
@@ -35,6 +39,7 @@
     align-items: center;
     gap: vars.$space-lg;
     margin-bottom: vars.$space-xl;
+    flex-wrap: wrap;
 
     &--balance {
       background-color: vars.$gray-900;
@@ -65,8 +70,12 @@
     &--income,
     &--expenses {
       flex: 1;
-      padding: vars.$space-lg;
+      padding: vars.$space-md-plus;
       border-radius: 12px;
+
+      @media(min-width: 700px) {
+        padding: vars.$space-lg;
+      }
 
       h2 {
         margin-bottom: vars.$space-sm;
@@ -76,10 +85,15 @@
   }
 
   &__pots {
-    padding: vars.$space-xl;
+    padding: vars.$space-lg vars.$space-md-plus;
     background-color: vars.$white;
     border-radius: 12px;
     margin-bottom: vars.$space-lg;
+
+    @media(min-width: 700px) {
+      padding: vars.$space-xl;
+    }
+
 
     &--header {
       display: flex;
@@ -100,6 +114,13 @@
         display: flex;
         align-items: flex-start;
         gap: vars.$space-md-plus;
+        flex-wrap: wrap;
+        flex-direction: column;
+
+        @media(min-width: 700px) {
+          flex-direction: row;
+        }
+
       }
 
       &-total {
@@ -109,7 +130,12 @@
         border-radius: 12px;
         background-color: vars.$beige-100;
         padding: vars.$space-md-plus vars.$space-md;
-        min-width: 247px;
+        width: 100%;
+
+        @media(min-width: 700px) {
+          width: auto;
+          min-width: 247px;
+        }
 
         span {
           color: vars.$gray-500;
@@ -124,9 +150,19 @@
 
       &-details {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: vars.$space-md;
         flex: 1;
+        width: 100%;
+
+        @media(min-width: 700px) {
+          width: auto;
+        }
+
+        @media (min-width: 850px) {
+          grid-template-columns: repeat(3, 1fr);
+        }
+
 
         &-pot {
           display: flex;
@@ -157,11 +193,15 @@
   &__transactions {
     background-color: vars.$white;
     border-radius: 12px;
-    padding: vars.$space-xl;
+    padding: vars.$space-lg vars.$space-md-plus;
     overflow-y: auto;
     flex: 1;
     display: flex;
     flex-direction: column;
+
+    @media(min-width: 700px) {
+      padding: vars.$space-xl;
+    }
 
     .loading {
       flex-grow: 1;
@@ -209,7 +249,6 @@
       display: flex;
       flex-direction: column;
       flex-grow: 1;
-
 
       &__item {
         display: flex;
@@ -259,8 +298,13 @@
   &__budgets {
     background-color: vars.$white;
     border-radius: 12px;
-    padding: vars.$space-xl;
+    padding: vars.$space-lg vars.$space-md-plus;
     margin-bottom: vars.$space-lg;
+    overflow-x: auto;
+
+    @media(min-width: 700px) {
+      padding: vars.$space-xl;
+    }
 
     &--header {
       display: flex;
@@ -281,12 +325,35 @@
       &-wrapper {
         display: flex;
         align-items: center;
-        justify-content: space-evenly;
+        justify-content: center;
+        column-gap: 1rem;
+        row-gap: 2rem;
+        flex-direction: column;
+
+        @media(min-width: 700px) {
+          flex-direction: row;
+        }
+
+        @media(min-width: 1250px) {
+          justify-content: space-evenly;
+        }
       }
 
       &-container {
         width: 240px;
         height: 240px;
+        flex: 2;
+
+        @media(min-width: 1250px) {
+          width: 220px;
+          height: 220px;
+          flex: unset;
+        }
+
+        @media (min-width: 1600px) {
+          width: 240px;
+          height: 240px;
+        }
 
         .recharts-surface {
           border-radius: 50%;
@@ -295,8 +362,15 @@
 
       &-legend {
         display: grid;
-        grid-template-columns: repeat(1, 1fr);
         gap: vars.$space-md;
+        width: auto;
+
+        @media(max-width: 700px) {
+          width: 100%;
+          grid-template-columns: repeat(2, 1fr) !important;
+          grid-template-rows: auto !important;
+          grid-auto-flow: unset !important;
+        }
 
         &-pot {
           display: flex;
@@ -326,10 +400,14 @@
 
   &__bills {
     background-color: vars.$white;
-    padding: vars.$space-xl;
+    padding: vars.$space-lg vars.$space-md-plus;
     border-radius: 12px;
     overflow-y: auto;
     flex: 1;
+
+    @media(min-width: 700px) {
+      padding: vars.$space-xl;
+    }
 
     &--header {
       display: flex;

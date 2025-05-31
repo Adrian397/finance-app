@@ -1,4 +1,4 @@
-import { type ReactElement, useState } from "react";
+import { type ReactElement, useEffect, useState } from "react";
 import "./Sidebar.scss";
 import { useAuthStore } from "@/stores/authStore.ts";
 import largeLogoIcon from "@/assets/images/common/logo-large.svg";
@@ -35,19 +35,41 @@ const navItems: NavItem[] = [
   },
 ];
 
+const MINIMIZE_BREAKPOINT = 1450;
+
 export const Sidebar = (): ReactElement => {
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [userPrefersMinimized, setUserPrefersMinimized] = useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useState(
+    window.innerWidth <= MINIMIZE_BREAKPOINT,
+  );
+
+  const isDisplayedAsMinimized = isSmallScreen ? true : userPrefersMinimized;
 
   const logout = useAuthStore((state) => state.logout);
 
-  const toggleMinimize = () => {
-    setIsMinimized(!isMinimized);
+  const handleManualToggle = () => {
+    setUserPrefersMinimized((prev) => !prev);
   };
 
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerWidth <= MINIMIZE_BREAKPOINT);
+    };
+
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
   return (
-    <nav className={`sidebar ${isMinimized ? "sidebar--minimized" : ""}`}>
+    <nav
+      className={`sidebar ${isDisplayedAsMinimized ? "sidebar--minimized" : ""}`}
+    >
       <div className="sidebar__header">
-        <img src={!isMinimized ? largeLogoIcon : smallLogoIcon} alt="logo" />
+        <img
+          src={!isDisplayedAsMinimized ? largeLogoIcon : smallLogoIcon}
+          alt="logo"
+        />
       </div>
       <ul className="sidebar__nav-list">
         {navItems.map((item) => (
@@ -59,26 +81,29 @@ export const Sidebar = (): ReactElement => {
               }
             >
               <img src={item.icon} alt="" className="sidebar__nav-icon" />
-              {!isMinimized && (
-                <span className="sidebar__nav-label text-preset-3">
-                  {item.label}
-                </span>
-              )}
+              <span className="sidebar__nav-label text-preset-3">
+                {item.label}
+              </span>
             </NavLink>
           </li>
         ))}
       </ul>
       <div className="sidebar__footer">
-        <button
-          onClick={toggleMinimize}
-          className="sidebar__minimize-btn text-preset-3"
-        >
-          <img src={minimizeIcon} alt="minimize menu" />
-          {!isMinimized && <span>Minimize Menu</span>}
-        </button>
-        <button onClick={logout} className="sidebar__logout-btn text-preset-3">
+        {!isSmallScreen && (
+          <button
+            onClick={handleManualToggle}
+            className="sidebar__minimize-btn text-preset-3"
+          >
+            <img
+              src={minimizeIcon}
+              alt={userPrefersMinimized ? "Expand menu" : "Minimize menu"}
+            />
+            {!userPrefersMinimized && <span>Minimize Menu</span>}
+          </button>
+        )}
+        <button onClick={logout} className="sidebar__logout-btn">
           <img src={logoutIcon} alt="logout" />
-          {!isMinimized && <span>Logout</span>}
+          <span className="text-preset-3">Logout</span>
         </button>
       </div>
     </nav>
