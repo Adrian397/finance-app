@@ -1,7 +1,5 @@
 import React, { type ReactElement, useEffect, useMemo, useState } from "react";
 import "./TransactionsPage.scss";
-import { Input } from "@/components/Input/Input.tsx";
-import { Select, type SelectOption } from "@/components/Select/Select.tsx";
 import { Pagination } from "@/components/Pagination/Pagination.tsx";
 import {
   type GetTransactionsParams,
@@ -10,7 +8,10 @@ import {
 } from "@/services/transactionService.ts";
 import type { ApiServiceError } from "@/utils/apiUtils.ts";
 import { useQuery } from "@tanstack/react-query";
-import { DotLoader } from "react-spinners";
+import { Table } from "@/pages/TransactionsPage/Table/Table.tsx";
+import type { SelectOption } from "@/components/Select/Select.tsx";
+import { Filters } from "@/pages/TransactionsPage/Filters/Filters.tsx";
+import { MobileView } from "@/pages/TransactionsPage/MobileView/MobileView.tsx";
 
 const sortByOptions: SelectOption[] = [
   { value: "latest", label: "Latest" },
@@ -36,15 +37,29 @@ const categoryOptions: SelectOption[] = [
 ];
 
 const ITEMS_PER_PAGE = 10;
+const TRANSACTIONS_MOBILE_BREAKPOINT = 768;
 
 const TransactionsPage = (): ReactElement => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState(sortByOptions[0].value as string);
   const [selectedCategory, setSelectedCategory] = useState(
     categoryOptions[0].value as string,
   );
-  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
+
+  const [isMobileView, setIsMobileView] = useState(
+    window.innerWidth <= TRANSACTIONS_MOBILE_BREAKPOINT,
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth <= TRANSACTIONS_MOBILE_BREAKPOINT);
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -83,140 +98,39 @@ const TransactionsPage = (): ReactElement => {
     queryFn: () => transactionService.getTransactions(queryParams),
   });
 
-  const transactionsToDisplay = paginatedData?.items || [];
   const paginationInfo = paginatedData?.pagination;
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
 
-  const isTableFullHeight =
-    (isLoading && !paginatedData) ||
-    isError ||
-    (!isLoading &&
-      !isError &&
-      transactionsToDisplay.length === 0 &&
-      !isFetching);
+  const viewProps = {
+    isLoading,
+    isFetching,
+    paginatedData,
+    isError,
+    error,
+  };
 
   return (
     <div className="transactions-page">
       <h1 className="transactions-page__heading text-preset-1">Transactions</h1>
       <div className="transactions-page__container">
-        <div className="transactions-page__filters">
-          <Input
-            type="text"
-            placeholder="Search transaction..."
-            onChange={(e) => setSearchTerm(e.target.value)}
-            name="transactionSearch"
-            value={searchTerm}
-            showSearchIcon
-          />
-          <div className="transactions-page__filters--selects">
-            <div>
-              <span className="text-preset-4">Sort by</span>
-              <Select
-                name="sortby"
-                onChange={(newValue) => setSortBy(String(newValue))}
-                value={sortBy}
-                options={sortByOptions}
-              />
-            </div>
-            <div>
-              <span className="text-preset-4">Category</span>
-              <Select
-                name="category"
-                onChange={(newValue) => setSelectedCategory(String(newValue))}
-                value={selectedCategory}
-                options={categoryOptions}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="transactions-page__table-wrapper">
-          <table
-            className="transactions-page__table"
-            style={{
-              height: isTableFullHeight ? "100%" : "",
-            }}
-          >
-            <thead>
-              <tr>
-                <th className="text-preset-5">Recipient / Sender</th>
-                <th className="text-preset-5">Category</th>
-                <th className="text-preset-5">Transaction Date</th>
-                <th className="text-preset-5">Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {isLoading && !paginatedData && (
-                <tr className="loading">
-                  <td colSpan={4}>
-                    <DotLoader color="#201F24" size={50} />
-                  </td>
-                </tr>
-              )}
-              {isError && error && (
-                <tr className="error">
-                  <td colSpan={4} className="text-preset-3">
-                    Error fetching transactions: {error.message}
-                  </td>
-                </tr>
-              )}
-              {!isLoading &&
-                !isError &&
-                transactionsToDisplay.length > 0 &&
-                transactionsToDisplay.map((transaction) => (
-                  <tr key={transaction.id}>
-                    <td className="recipient-sender">
-                      {transaction.avatar && (
-                        <img src={transaction.avatar} alt="" />
-                      )}
-                      <span className="text-preset-4b">{transaction.name}</span>
-                    </td>
-                    <td className="text-preset-5 category">
-                      {transaction.category}
-                    </td>
-                    <td className="text-preset-5 date">
-                      {new Date(transaction.date).toLocaleDateString("en-GB", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </td>
-                    <td
-                      className={` text-preset-4b
-                        ${
-                          transaction.type === "income"
-                            ? "amount-income"
-                            : "amount-expense"
-                        } `}
-                    >
-                      {transaction.amount < 0
-                        ? "-"
-                        : transaction.type === "income" &&
-                            transaction.amount > 0
-                          ? "+"
-                          : ""}
-                      ${Math.abs(transaction.amount).toFixed(2)}
-                    </td>
-                  </tr>
-                ))}
-              {!isLoading &&
-                !isError &&
-                transactionsToDisplay.length === 0 &&
-                !isFetching && (
-                  <tr>
-                    <td
-                      colSpan={4}
-                      className="no-transactions-message text-preset-3"
-                    >
-                      No transactions found.
-                    </td>
-                  </tr>
-                )}
-            </tbody>
-          </table>
-        </div>
+        <Filters
+          sortBy={sortBy}
+          searchTerm={searchTerm}
+          setSelectedCategory={setSelectedCategory}
+          setSortBy={setSortBy}
+          setSearchTerm={setSearchTerm}
+          selectedCategory={selectedCategory}
+          sortByOptions={sortByOptions}
+          categoryOptions={categoryOptions}
+        />
+        {isMobileView ? (
+          <MobileView {...viewProps} />
+        ) : (
+          <Table {...viewProps} />
+        )}
         {paginationInfo && paginationInfo.totalPages > 1 && (
           <Pagination
             currentPage={paginationInfo.currentPage}

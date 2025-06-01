@@ -5,8 +5,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: vars.$space-sm;
 
-  button {
+  button,
+  .pagination__ellipsis {
     background-color: transparent;
     border: 1px solid vars.$beige-500;
     display: flex;
@@ -17,13 +19,31 @@
     padding: vars.$space-md;
   }
 
+  .pagination__ellipsis {
+    display: inline-flex;
+    width: 40px;
+    height: 40px;
+  }
+
   &__nav {
     display: flex;
     align-items: center;
     gap: vars.$space-md;
     height: 40px;
-    width: 94px;
+    width: 48px;
     transition: background-color 0.3s ease;
+
+    @media (min-width: vars.$breakpoint-md) {
+      width: 94px;
+    }
+
+    span {
+      display: none;
+
+      @media (min-width: vars.$breakpoint-md) {
+        display: inline-block;
+      }
+    }
 
     &:disabled {
       opacity: 0;

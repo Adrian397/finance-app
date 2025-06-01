@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  flex-grow: 1;
 
   .loading {
     text-align: center;
@@ -36,7 +37,7 @@
 
 
   &__container {
-    padding: vars.$space-xl;
+    padding: vars.$space-md-plus;
     background-color: vars.$white;
     border-radius: 12px;
     flex-grow: 1;
@@ -44,7 +45,11 @@
     flex-direction: column;
     overflow: hidden;
 
-    .input-group__wrapper {
+    @media(min-width: 810px) {
+      padding: vars.$space-xl;
+    }
+
+    .input-group {
       width: 320px;
       max-width: 100%;
     }
@@ -53,6 +58,7 @@
   &__filters {
     display: flex;
     justify-content: space-between;
+    gap: vars.$space-lg;
     margin-bottom: vars.$space-lg;
 
 
@@ -66,8 +72,89 @@
         align-items: center;
         gap: vars.$space-xs;
 
+        span,
+        .select-group {
+          display: none;
+
+          @media(min-width: 810px) {
+            display: unset;
+          }
+        }
+
+        .mobile-category {
+          .mobile-filter__options-list {
+            width: 177px;
+            max-height: 300px;
+          }
+        }
+
+        .mobile-sort {
+          .mobile-filter__options-list {
+            width: 113px;
+          }
+        }
+
+        .mobile-filter {
+          display: block;
+          position: relative;
+
+          &__button {
+            background-color: transparent;
+            border: 0;
+            cursor: pointer;
+
+            img {
+              width: 20px;
+              height: 20px;
+            }
+          }
+
+          &__options {
+            &-list {
+              display: flex;
+              flex-direction: column;
+              position: absolute;
+              top: 2rem;
+              right: 0;
+              background-color: vars.$white;
+              border-radius: 12px;
+              padding: vars.$space-sm vars.$space-md-plus;
+              list-style: none;
+              width: 177px;
+              box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.25);
+              overflow-y: auto;
+              scrollbar-width: none;
+              -ms-overflow-style: none;
+
+              &::-webkit-scrollbar {
+                width: 0;
+                height: 0;
+              }
+            }
+
+            &-item {
+              cursor: pointer;
+            }
+
+            &-item:not(:last-child) {
+              border-bottom: 1px solid vars.$gray-100;
+              padding-bottom: vars.$space-sm;
+            }
+
+            &-item:not(:first-child) {
+              padding-top: vars.$space-md-plus;
+            }
+          }
+
+          @media(min-width: 810px) {
+            display: none;
+          }
+        }
+
+
         span {
           color: vars.$gray-500;
+          white-space: nowrap;
         }
       }
 
@@ -87,7 +174,6 @@
 
           .select-group__options-list {
             max-height: 300px;
-
           }
         }
       }
@@ -181,6 +267,99 @@
   }
 
   .pagination {
-    margin-top: 48px;
+    padding-top: 48px;
+    margin-top: auto;
+  }
+
+  .mobile-view__no-transactions,
+  .mobile-view__status--error {
+    text-align: center;
+    font-weight: 400;
+  }
+
+  .mobile-view__status--error {
+    color: vars.$red;
+  }
+
+  .mobile-view__no-transactions {
+    color: vars.$gray-900
+  }
+
+  .mobile-view__status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+  }
+
+  .mobile-transactions-list {
+    ul {
+      display: flex;
+      flex-direction: column;
+      list-style-type: none;
+    }
+
+    .mobile-transaction-item {
+      padding: vars.$space-md 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      &__avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+      }
+
+      &__name,
+      &__amount {
+        color: vars.$gray-900;
+      }
+
+      &__category,
+      &__date {
+        color: vars.$gray-500;
+      }
+
+      &__amount {
+        &.amount-income {
+          color: vars.$green;
+        }
+
+        &.amount-expense {
+          color: vars.$gray-900;
+        }
+      }
+
+      &__details {
+        display: flex;
+        align-items: center;
+        gap: vars.$space-xs;
+
+        div {
+          display: flex;
+          flex-direction: column;
+          gap: vars.$space-xxs;
+        }
+      }
+
+      &__amount-details {
+        display: flex;
+        flex-direction: column;
+        gap: vars.$space-xxs;
+      }
+    }
+
+    .mobile-transaction-item:not(:last-child) {
+      border-bottom: 1px solid vars.$gray-100;
+    }
+
+    .mobile-transaction-item:first-child {
+      padding-top: 0;
+    }
+
+    .mobile-transaction-item:last-child {
+      padding-bottom: 0;
+    }
   }
 }
