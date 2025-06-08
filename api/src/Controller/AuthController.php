@@ -2,13 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\Transaction;
 use App\Entity\User;
+use App\Service\DefaultAccountSetupService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
@@ -34,7 +33,7 @@ class AuthController extends AbstractController
         UserPasswordHasherInterface $passwordHasher,
         EntityManagerInterface      $entityManager,
         ValidatorInterface          $validator,
-        KernelInterface             $kernel
+        DefaultAccountSetupService  $accountSetupService
     ): JsonResponse
     {
         try {
@@ -59,10 +58,7 @@ class AuthController extends AbstractController
 
         $passwordConstraints = [
             new Assert\NotBlank(['message' => 'Password should not be empty.']),
-            new Assert\Length([
-                'min' => 8,
-                'minMessage' => 'Your password must be at least {{ limit }} characters long.',
-            ]),
+            new Assert\Length(['min' => 8, 'minMessage' => 'Your password must be at least {{ limit }} characters long.']),
         ];
         $passwordViolations = $validator->validate($password, $passwordConstraints);
         if (count($passwordViolations) > 0) {
@@ -85,51 +81,7 @@ class AuthController extends AbstractController
             return $this->json(['error' => 'An error occurred while registering the user. ' . $e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        $dataJsonPath = $kernel->getProjectDir() . '/src/DataFixtures/data.json';
-        if (file_exists($dataJsonPath)) {
-            $jsonString = file_get_contents($dataJsonPath);
-            $jsonData = json_decode($jsonString, true);
-
-            if (isset($jsonData['transactions']) && is_array($jsonData['transactions'])) {
-                foreach ($jsonData['transactions'] as $item) {
-                    $transaction = new Transaction();
-                    $transaction->setOwner($user);
-                    $transaction->setName($item['name'] ?? 'Unknown Sender/Recipient');
-                    $transaction->setCategory($item['category'] ?? 'Uncategorized');
-
-                    try {
-                        $transaction->setDate(new \DateTimeImmutable($item['date']));
-                    } catch (\Exception $e) {
-                        error_log("Default Transactions: User {$user->getId()}: Skipping transaction '{$item['name']}' due to invalid date '{$item['date']}'. Error: {$e->getMessage()}");
-                        continue;
-                    }
-
-                    $amount = (float)($item['amount'] ?? 0);
-                    $transaction->setAmount(sprintf('%.2f', $amount));
-                    $transaction->setType($amount >= 0 ? 'income' : 'expense');
-
-                    $avatarPath = $item['avatar'] ?? null;
-                    if ($avatarPath && strpos($avatarPath, './assets') === 0) {
-                        $avatarPath = str_replace('./assets', '', $avatarPath);
-                    }
-                    $transaction->setAvatar($avatarPath);
-                    $transaction->setIsRecurring($item['recurring'] ?? false);
-
-                    $entityManager->persist($transaction);
-                }
-
-                try {
-                    $entityManager->flush();
-                } catch (\Exception $e) {
-
-                    error_log("Default Transactions: User {$user->getId()}: Failed to save default transactions. Error: {$e->getMessage()}");
-                }
-            } else {
-                error_log("Default Transactions: User {$user->getId()}: 'transactions' key not found or not an array in data.json at {$dataJsonPath}");
-            }
-        } else {
-            error_log("Default Transactions: User {$user->getId()}: data.json not found at {$dataJsonPath}");
-        }
+        $accountSetupService->setupDefaultDataForUser($user);
 
         return $this->json(
             [

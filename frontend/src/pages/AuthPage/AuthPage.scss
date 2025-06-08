@@ -47,15 +47,6 @@
     &__submit {
       width: 100%;
       margin-bottom: vars.$space-xl;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      &.is-pending {
-        padding-top: 0;
-        padding-bottom: 0;
-        height: 55px;
-      }
     }
 
     &__option {

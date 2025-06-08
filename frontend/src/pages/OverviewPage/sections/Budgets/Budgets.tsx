@@ -1,24 +1,32 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { ROUTE_PATHS } from "@/utils/routePaths.ts";
 import arrowIcon from "@/assets/images/common/icon-caret-right.svg";
-import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+import { BudgetsChart } from "@/components/BudgetsChart/BudgetsChart.tsx";
+import { type BudgetDetails, budgetService } from "@/services/budgetService.ts";
+import { useQuery } from "@tanstack/react-query";
+import type { ApiServiceError } from "@/utils/apiUtils.ts";
+import { DotLoader } from "react-spinners";
+import { calculateChartData } from "@/utils/budgetUtils.ts";
 
-const budgetData = [
-  { name: "Groceries", value: 400, color: "#F2CDAC" },
-  { name: "Utilities", value: 150, color: "#626070" },
-  { name: "Rent/Mortgage", value: 850, color: "#82C9D7" },
-  { name: "Transport", value: 120, color: "#277C78" },
-];
-
-const currentSpentAmount = 338;
-const totalBudgetLimit = 975;
 export const Budgets = () => {
-  const desiredCenterCircleDiameter = 187;
-  const centerCircleRadius = desiredCenterCircleDiameter / 2;
+  const {
+    data: budgetsData,
+    isLoading,
+    isError,
+    error,
+  } = useQuery<BudgetDetails[], ApiServiceError>({
+    queryKey: ["budgets"],
+    queryFn: budgetService.getBudgets,
+  });
+
+  const { chartData, totalSpent, totalBudget } = useMemo(
+    () => calculateChartData(budgetsData),
+    [budgetsData],
+  );
 
   const maxRowsPerColumn = 4;
-  const numberOfItems = budgetData.length;
+  const numberOfItems = budgetsData?.length || 0;
   const numberOfColumns = Math.ceil(numberOfItems / maxRowsPerColumn);
   const gridTemplateColumns = `repeat(${numberOfColumns}, 1fr)`;
 
@@ -31,91 +39,61 @@ export const Budgets = () => {
           <img src={arrowIcon} alt="" />
         </Link>
       </div>
-      <div className="overview-page__budgets--chart-wrapper">
-        <div className="overview-page__budgets--chart-container">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={budgetData}
-                labelLine={false}
-                outerRadius={120}
-                innerRadius={80}
-                dataKey="value"
-                nameKey="name"
-              >
-                {budgetData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={entry.color}
-                    stroke={entry.color}
-                  />
-                ))}
-              </Pie>
-              <g>
-                <circle
-                  cx="50%"
-                  cy="50%"
-                  r={centerCircleRadius}
-                  fill="white"
-                  opacity="0.25"
-                />
-                <text
-                  x="50%"
-                  y="50%"
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                  className="text-preset-1"
-                  dy="-0.5rem"
-                  style={{
-                    fill: "#201F24",
-                  }}
-                >
-                  ${currentSpentAmount}
-                </text>
-                <text
-                  x="50%"
-                  y="50%"
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                  className="text-preset-5"
-                  dy="1.6rem"
-                  style={{
-                    fill: "#696868",
-                  }}
-                >
-                  of ${totalBudgetLimit} limit
-                </text>
-              </g>
-            </PieChart>
-          </ResponsiveContainer>
+      {isLoading && (
+        <div className="loading">
+          <DotLoader color="#201F24" size={40} />
         </div>
-        <div
-          className="overview-page__budgets--chart-legend"
-          style={{
-            gridTemplateColumns,
-            gridAutoFlow: "column",
-            gridTemplateRows: `repeat(${maxRowsPerColumn}, auto)`,
-          }}
-        >
-          {budgetData.map((entry, index) => (
-            <div
-              className="overview-page__budgets--chart-legend-pot"
-              key={`legend-pot-${index}`}
-            >
-              <div
-                className="decoration"
-                style={{
-                  backgroundColor: entry.color,
-                }}
-              ></div>
-              <div>
-                <span className="text-preset-5">{entry.name}</span>
-                <p className="text-preset-4b">${entry.value.toFixed(2)}</p>
-              </div>
+      )}
+      {isError && error && (
+        <div className="error text-preset-3">
+          <p>Error loading budgets: {error.message}</p>
+        </div>
+      )}
+      {!isLoading &&
+        !isError &&
+        (budgetsData && budgetsData.length > 0 ? (
+          <div className="overview-page__budgets--chart-wrapper">
+            <div className="overview-page__budgets--chart-container">
+              <BudgetsChart
+                data={chartData}
+                totalSpent={totalSpent}
+                totalBudget={totalBudget}
+              />
             </div>
-          ))}
-        </div>
-      </div>
+            <div
+              className="overview-page__budgets--chart-legend"
+              style={{
+                gridTemplateColumns,
+                gridAutoFlow: "column",
+                gridTemplateRows: `repeat(${maxRowsPerColumn}, auto)`,
+              }}
+            >
+              {budgetsData.map((budget, index) => (
+                <div
+                  className="overview-page__budgets--chart-legend-pot"
+                  key={budget.id || index}
+                >
+                  <div
+                    className="decoration"
+                    style={{
+                      backgroundColor: budget.theme || "#cccccc",
+                    }}
+                  ></div>
+                  <div>
+                    <span className="text-preset-5">{budget.category}</span>
+                    <p className="text-preset-4b">
+                      ${budget.spentAmount.toFixed(2)}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="no-budgets-message text-preset-3">
+            You haven't set up any budgets yet.
+          </div>
+        ))}
     </section>
   );
 };

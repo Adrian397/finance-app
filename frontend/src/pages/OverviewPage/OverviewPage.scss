@@ -302,6 +302,17 @@
     margin-bottom: vars.$space-lg;
     overflow-x: auto;
 
+    .no-budgets-message {
+      flex-grow: 1;
+      text-align: center;
+      font-weight: 400;
+      color: vars.$gray-900;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     @media(min-width: 700px) {
       padding: vars.$space-xl;
     }

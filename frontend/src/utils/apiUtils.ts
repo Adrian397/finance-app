@@ -27,6 +27,10 @@ export class ApiServiceError extends Error {
 export const handleApiResponse = async <T = unknown>(
   response: Response,
 ): Promise<T> => {
+  if (response.status === 204) {
+    return undefined as T;
+  }
+
   const responseData: ApiErrorResponse | T = await response.json();
 
   if (!response.ok) {

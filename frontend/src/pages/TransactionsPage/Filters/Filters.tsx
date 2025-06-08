@@ -81,7 +81,10 @@ export const Filters = ({
             value={sortBy}
             options={sortByOptions}
           />
-          <div className="mobile-filter mobile-sort" ref={mobileSortFilterRef}>
+          <div
+            className="mobile-filter mobile-sort dropdown-wrapper"
+            ref={mobileSortFilterRef}
+          >
             <button
               type="button"
               className="mobile-filter__button"
@@ -95,11 +98,11 @@ export const Filters = ({
               <img src={sortIcon} alt="" />
             </button>
             {isMobileSortDropdownOpen && (
-              <ul className="mobile-filter__options-list" role="listbox">
+              <ul className="dropdown-options-list" role="listbox">
                 {sortByOptions.map((option) => (
                   <li
                     key={option.value}
-                    className="mobile-filter__options-item text-preset-4"
+                    className="dropdown-options-item text-preset-4"
                     onClick={() => {
                       setSortBy(String(option.value));
                       setIsMobileSortDropdownOpen(false);
@@ -130,7 +133,7 @@ export const Filters = ({
             options={categoryOptions}
           />
           <div
-            className="mobile-filter mobile-category"
+            className="mobile-filter mobile-category dropdown-wrapper"
             ref={mobileCategoryFilterRef}
           >
             <button
@@ -146,11 +149,11 @@ export const Filters = ({
               <img src={filterIcon} alt="" />
             </button>
             {isMobileCategoryDropdownOpen && (
-              <ul className="mobile-filter__options-list" role="listbox">
+              <ul className="dropdown-options-list" role="listbox">
                 {categoryOptions.map((option) => (
                   <li
                     key={option.value}
-                    className="mobile-filter__options-item text-preset-4"
+                    className="dropdown-options-item text-preset-4"
                     onClick={() => {
                       setSelectedCategory(String(option.value));
                       setIsMobileCategoryDropdownOpen(false);

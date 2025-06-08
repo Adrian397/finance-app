@@ -82,21 +82,19 @@
         }
 
         .mobile-category {
-          .mobile-filter__options-list {
+          .dropdown-options-list {
             width: 177px;
-            max-height: 300px;
           }
         }
 
         .mobile-sort {
-          .mobile-filter__options-list {
+          .dropdown-options-list {
             width: 113px;
           }
         }
 
         .mobile-filter {
           display: block;
-          position: relative;
 
           &__button {
             background-color: transparent;
@@ -109,41 +107,9 @@
             }
           }
 
-          &__options {
-            &-list {
-              display: flex;
-              flex-direction: column;
-              position: absolute;
-              top: 2rem;
-              right: 0;
-              background-color: vars.$white;
-              border-radius: 12px;
-              padding: vars.$space-sm vars.$space-md-plus;
-              list-style: none;
-              width: 177px;
-              box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.25);
-              overflow-y: auto;
-              scrollbar-width: none;
-              -ms-overflow-style: none;
-
-              &::-webkit-scrollbar {
-                width: 0;
-                height: 0;
-              }
-            }
-
-            &-item {
-              cursor: pointer;
-            }
-
-            &-item:not(:last-child) {
-              border-bottom: 1px solid vars.$gray-100;
-              padding-bottom: vars.$space-sm;
-            }
-
-            &-item:not(:first-child) {
-              padding-top: vars.$space-md-plus;
-            }
+          .dropdown-options-list {
+            top: 2rem;
+            right: 0;
           }
 
           @media(min-width: 810px) {
@@ -160,7 +126,7 @@
 
       & > div:nth-of-type(1) {
         .select-group {
-          .select-group__wrapper {
+          .dropdown-wrapper {
             width: 113px;
           }
         }
@@ -168,12 +134,8 @@
 
       & > div:nth-of-type(2) {
         .select-group {
-          .select-group__wrapper {
+          .dropdown-wrapper {
             min-width: 177px;
-          }
-
-          .select-group__options-list {
-            max-height: 300px;
           }
         }
       }

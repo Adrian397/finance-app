@@ -11,6 +11,7 @@ import arrowIcon from "@/assets/images/common/icon-caret-down.svg";
 export type SelectOption = {
   value: string | number;
   label: string;
+  disabled?: boolean;
 };
 
 type Props = {
@@ -22,7 +23,8 @@ type Props = {
   onChange: (selectedValue: string | number | undefined) => void;
   placeholder?: string;
   helper?: string;
-  disabled?: boolean;
+  error?: string | null | boolean;
+  showColorThemes?: boolean;
 };
 
 export const Select = ({
@@ -32,7 +34,8 @@ export const Select = ({
   onChange,
   options,
   helper,
-  disabled,
+  error,
+  showColorThemes,
 }: Props): ReactElement => {
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
@@ -40,9 +43,7 @@ export const Select = ({
   const selectedOption = options.find((option) => option.value === value);
 
   const toggleDropdown = () => {
-    if (!disabled) {
-      setIsOpen(!isOpen);
-    }
+    setIsOpen(!isOpen);
   };
 
   const handleOptionClick = (optionValue: string | number) => {
@@ -51,7 +52,6 @@ export const Select = ({
   };
 
   const handleKeyDownControl = (event: KeyboardEvent<HTMLButtonElement>) => {
-    if (disabled) return;
     switch (event.key) {
       case "Enter":
       case " ":
@@ -102,21 +102,32 @@ export const Select = ({
   return (
     <div className="select-group" ref={selectRef}>
       {label && (
-        <label className="text-preset-5b" htmlFor={id}>
+        <label
+          className={`text-preset-5b ${error ? "error" : ""}`}
+          htmlFor={id}
+        >
           {label}
         </label>
       )}
-      <div className={`select-group__wrapper ${isOpen ? "is-open" : ""}`}>
+      <div className={`dropdown-wrapper ${isOpen ? "is-open" : ""}`}>
         <button
           type="button"
           id={id}
-          className="select-group__control text-preset-4"
+          className={`select-group__control text-preset-4 ${showColorThemes && selectedOption ? "theme-color" : ""} ${error ? "error" : ""}`}
           onClick={toggleDropdown}
           onKeyDown={handleKeyDownControl}
         >
-          <span className="select-group__control-label">
-            {selectedOption ? selectedOption.label : ""}
-          </span>
+          <div>
+            {showColorThemes && selectedOption && (
+              <div
+                className="theme-color"
+                style={{ backgroundColor: String(selectedOption.value) }}
+              ></div>
+            )}
+            <span className="select-group__control-label text-preset-4">
+              {selectedOption ? selectedOption.label : ""}
+            </span>
+          </div>
           <img
             src={arrowIcon}
             className={`select-group__control-arrow ${isOpen ? "open" : ""}`}
@@ -124,18 +135,29 @@ export const Select = ({
           />
         </button>
         {isOpen && (
-          <ul className="select-group__options-list">
+          <ul className="dropdown-options-list">
             {options.map((option) => (
               <li
                 key={option.value}
-                className={`select-group__options-item  text-preset-4 ${option.value === value ? "selected" : ""}`}
+                className={`dropdown-options-item  text-preset-4 ${showColorThemes && option.value ? "theme-color" : ""} ${option.disabled ? "disabled" : ""}`}
                 onClick={() => handleOptionClick(option.value)}
                 onKeyDown={(e) => handleOptionKeyDown(e, option.value)}
                 role="option"
                 aria-selected={option.value === value}
                 tabIndex={0}
               >
-                {option.label}
+                <div>
+                  {showColorThemes && (
+                    <div
+                      className="theme-color"
+                      style={{ backgroundColor: String(option.value) }}
+                    ></div>
+                  )}
+                  {option.label}
+                </div>
+                {option.disabled && (
+                  <span className="text-preset-5 used-badge">Already Used</span>
+                )}
               </li>
             ))}
           </ul>

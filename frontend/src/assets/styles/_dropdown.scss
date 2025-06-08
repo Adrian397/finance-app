@@ -1,0 +1,84 @@
+@use './variables' as vars;
+
+.dropdown-wrapper {
+  position: relative;
+
+  .dropdown-options {
+    &-list {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 3.5rem;
+      background-color: vars.$white;
+      border-radius: 12px;
+      padding: vars.$space-sm vars.$space-md-plus;
+      list-style: none;
+      width: 100%;
+      box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.25);
+      overflow-y: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      max-height: 300px;
+      z-index: 2;
+
+      &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+    }
+
+    &-item {
+      cursor: pointer;
+      padding: vars.$space-sm 0;
+    }
+
+    &-item.disabled {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+
+      & > div {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: vars.$gray-500;
+
+        .theme-color {
+          opacity: 0.25;
+        }
+      }
+
+      .used-badge {
+        color: vars.$gray-500;
+      }
+    }
+
+    &-item.theme-color {
+      & > div {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .theme-color {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+      }
+
+    }
+
+    &-item:not(:last-child) {
+      border-bottom: 1px solid vars.$gray-100;
+    }
+
+    &-item:first-child {
+      padding-top: 0;
+    }
+
+    &-item:last-child {
+      padding-bottom: 0;
+    }
+  }
+}

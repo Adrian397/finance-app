@@ -6,7 +6,7 @@ import searchIcon from "@/assets/images/common/icon-search.svg";
 import dollarIcon from "@/assets/images/common/icon-dollar.svg";
 
 type Props = {
-  type: "text" | "email" | "password";
+  type: "text" | "email" | "password" | "number";
   name: string;
   label?: string;
   id?: string;

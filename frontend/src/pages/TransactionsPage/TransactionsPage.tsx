@@ -12,6 +12,8 @@ import { Table } from "@/pages/TransactionsPage/Table/Table.tsx";
 import type { SelectOption } from "@/components/Select/Select.tsx";
 import { Filters } from "@/pages/TransactionsPage/Filters/Filters.tsx";
 import { MobileView } from "@/pages/TransactionsPage/MobileView/MobileView.tsx";
+import { categoryOptions } from "@/utils/general.ts";
+import { useSearchParams } from "react-router-dom";
 
 const sortByOptions: SelectOption[] = [
   { value: "latest", label: "Latest" },
@@ -22,29 +24,16 @@ const sortByOptions: SelectOption[] = [
   { value: "amount_asc", label: "Lowest" },
 ];
 
-const categoryOptions: SelectOption[] = [
-  { value: "", label: "All Transactions" },
-  { value: "Entertainment", label: "Entertainment" },
-  { value: "Bills", label: "Bills" },
-  { value: "Groceries", label: "Groceries" },
-  { value: "Dining Out", label: "Dining Out" },
-  { value: "Transportation", label: "Transportation" },
-  { value: "Personal Care", label: "Personal Care" },
-  { value: "Education", label: "Education" },
-  { value: "Lifestyle", label: "Lifestyle" },
-  { value: "Shopping", label: "Shopping" },
-  { value: "General", label: "General" },
-];
-
 const ITEMS_PER_PAGE = 10;
 const TRANSACTIONS_MOBILE_BREAKPOINT = 768;
 
 const TransactionsPage = (): ReactElement => {
+  const [searchParams] = useSearchParams();
+  const initialCategory = searchParams.get("category") || "";
+
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState(sortByOptions[0].value as string);
-  const [selectedCategory, setSelectedCategory] = useState(
-    categoryOptions[0].value as string,
-  );
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
 

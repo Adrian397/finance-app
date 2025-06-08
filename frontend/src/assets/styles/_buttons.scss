@@ -23,6 +23,15 @@
     border-color: vars.$gray-500;
   }
 
+  &.is-pending {
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   &:disabled {
     cursor: not-allowed;
   }
@@ -63,7 +72,17 @@
   color: vars.$white;
   border-color: vars.$red;
 
-  &:hover {
+  &.is-pending {
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &:hover,
+  &:disabled {
     opacity: 0.8;
   }
 }
