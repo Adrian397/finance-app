@@ -21,25 +21,59 @@
   &__main {
     display: flex;
     gap: vars.$space-lg;
+    flex-direction: column;
+
+    @media (min-width: 1150px) {
+      flex-direction: row;
+    }
 
     &--spending-summary-wrapper {
-      padding: vars.$space-lg vars.$space-xl;
+      padding: vars.$space-lg vars.$space-md-plus;
       background-color: vars.$white;
       border-radius: 12px;
-      flex: 2;
       height: fit-content;
-      position: sticky;
-      top: 0;
+
+      @media (min-width: 880px) {
+        padding: vars.$space-lg vars.$space-xl;
+        display: flex;
+      }
+
+      @media (min-width: 1150px) {
+        display: unset;
+        position: sticky;
+        top: 0;
+        flex: 2;
+      }
     }
 
     &--chart-container {
       width: 240px;
       height: 240px;
+      flex: 1;
       margin: 0 auto;
+
+      @media (min-width: 880px) {
+        margin: 0;
+      }
+
+      @media (min-width: 1150px) {
+        margin: 0 auto;
+        flex: unset;
+      }
     }
 
     &--spending-summary {
+      flex: 1;
       margin-top: vars.$space-2xl;
+
+      @media (min-width: 880px) {
+        margin-top: 0;
+      }
+
+      @media (min-width: 1150px) {
+        flex: unset;
+        margin-top: vars.$space-2xl;
+      }
 
       p {
         margin-bottom: vars.$space-lg;
@@ -105,7 +139,10 @@
       display: flex;
       flex-direction: column;
       gap: vars.$space-lg;
-      flex: 4;
+
+      @media (min-width: 1150px) {
+        flex: 4;
+      }
 
       .dropdown-wrapper {
         .dropdown-options-list {
@@ -117,9 +154,13 @@
     }
 
     &--budget {
-      padding: vars.$space-xl;
+      padding: vars.$space-lg vars.$space-md-plus;
       border-radius: 12px;
       background-color: vars.$white;
+
+      @media(min-width: 880px) {
+        padding: vars.$space-xl;
+      }
 
       &-heading {
         display: flex;
@@ -217,7 +258,6 @@
         background-color: vars.$beige-100;
         padding: vars.$space-md-plus;
         border-radius: 12px;
-        margin-bottom: vars.$space-md-plus;
 
         .no-transactions-summary {
           text-align: center;

@@ -36,17 +36,22 @@
 }
 
 .modal-content {
-  padding: vars.$space-xl;
+  padding: vars.$space-lg vars.$space-md-plus;
   background-color: vars.$white;
   border-radius: 12px;
   max-width: 100%;
   width: 560px;
   animation: slideInUp 0.3s ease-out;
+
+  @media (min-width: 880px) {
+    padding: vars.$space-xl;
+  }
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: vars.$space-md-plus;
 
   .modal-close-btn {
@@ -58,6 +63,11 @@
 
 .modal-title {
   color: vars.$gray-900;
+  font-size: 1.25rem;
+
+  @media (min-width: 880px) {
+    font-size: 2rem;
+  }
 }
 
 .budget-edit-modal,
@@ -75,6 +85,14 @@
 
       .modal-form-error {
         color: vars.$red;
+      }
+
+      .dropdown-options-list {
+        max-height: 150px;
+
+        @media (min-width: 880px) {
+          max-height: 200px;
+        }
       }
 
       .modal-form-submit {
