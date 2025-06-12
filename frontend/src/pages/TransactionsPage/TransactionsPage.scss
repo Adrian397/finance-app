@@ -19,7 +19,7 @@
     }
   }
 
-  .error {
+  .error-desktop {
     text-align: center;
     color: vars.$red;
 
@@ -169,7 +169,7 @@
     tbody {
       width: 100%;
 
-      .no-transactions-message {
+      .empty-message-desktop {
         text-align: center;
         font-weight: 400;
         color: vars.$gray-900;
@@ -233,18 +233,13 @@
     margin-top: auto;
   }
 
-  .mobile-view__no-transactions,
-  .mobile-view__status--error {
+  .error-message,
+  .empty-message {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    font-weight: 400;
-  }
-
-  .mobile-view__status--error {
-    color: vars.$red;
-  }
-
-  .mobile-view__no-transactions {
-    color: vars.$gray-900
   }
 
   .mobile-view__status {

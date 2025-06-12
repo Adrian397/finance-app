@@ -104,7 +104,7 @@ export const AddBudgetModal = ({ isOpen, onClose, allBudgets }: Props) => {
       className="budget-add-modal"
     >
       <form onSubmit={handleSubmit}>
-        <p className="text-preset-4 description">
+        <p className="text-preset-4 modal-description">
           Choose a category to set a spending budget. These categories can help
           you monitor spending.
         </p>

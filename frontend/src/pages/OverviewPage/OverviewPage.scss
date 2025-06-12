@@ -210,26 +210,20 @@
       justify-content: center;
     }
 
-    .error {
-      flex-grow: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: vars.$red;
-      font-weight: 400;
-    }
-
-    .no-transactions-message {
-      flex-grow: 1;
+    .error-message {
       text-align: center;
-      font-weight: 400;
-      color: vars.$gray-900;
-      list-style: none;
+      flex-grow: 1;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
+    .empty-message {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
     &--header {
       display: flex;
@@ -301,17 +295,32 @@
     padding: vars.$space-lg vars.$space-md-plus;
     margin-bottom: vars.$space-lg;
     overflow-x: auto;
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
 
-    .no-budgets-message {
-      flex-grow: 1;
+    .error-message {
       text-align: center;
-      font-weight: 400;
-      color: vars.$gray-900;
-      list-style: none;
+      flex-grow: 1;
       display: flex;
       align-items: center;
       justify-content: center;
     }
+
+    .empty-message {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .loading {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
 
     @media(min-width: 700px) {
       padding: vars.$space-xl;

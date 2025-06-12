@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -40,6 +41,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank(groups: ['registration'])]
     private ?string $name = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    private ?string $balance = '0.00';
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    private ?string $totalIncome = '0.00';
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    private ?string $totalExpenses = '0.00';
+
 
     public function getId(): ?int
     {
@@ -118,6 +129,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setName(?string $name): static
     {
         $this->name = $name;
+        return $this;
+    }
+
+    public function getBalance(): ?string
+    {
+        return $this->balance;
+    }
+
+    public function setBalance(string $balance): static
+    {
+        $this->balance = $balance;
+        return $this;
+    }
+
+    public function getTotalIncome(): ?string
+    {
+        return $this->totalIncome;
+    }
+
+    public function setTotalIncome(string $totalIncome): static
+    {
+        $this->totalIncome = $totalIncome;
+        return $this;
+    }
+
+    public function getTotalExpenses(): ?string
+    {
+        return $this->totalExpenses;
+    }
+
+    public function setTotalExpenses(string $totalExpenses): static
+    {
+        $this->totalExpenses = $totalExpenses;
         return $this;
     }
 }

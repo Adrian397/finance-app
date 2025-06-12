@@ -1,0 +1,6 @@
+@use '../../assets/styles/variables' as vars;
+
+.empty-message {
+  color: vars.$gray-900;
+  font-weight: 400;
+}

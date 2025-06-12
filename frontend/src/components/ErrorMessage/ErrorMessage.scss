@@ -1,0 +1,6 @@
+@use '../../assets/styles/variables' as vars;
+
+.error-message {
+  font-weight: 400;
+  color: vars.$red;
+}

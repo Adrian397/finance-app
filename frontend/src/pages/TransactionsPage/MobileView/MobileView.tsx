@@ -2,6 +2,8 @@ import React, { type ReactElement } from "react";
 import type { PaginatedTransactionsResponse } from "@/services/transactionService.ts";
 import type { ApiServiceError } from "@/utils/apiUtils.ts";
 import { DotLoader } from "react-spinners";
+import { ErrorMessage } from "@/components/ErrorMessage/ErrorMessage.tsx";
+import { EmptyMessage } from "@/components/EmptyMessage/EmptyMessage.tsx";
 
 type Props = {
   isLoading: boolean;
@@ -28,11 +30,12 @@ export const MobileView = ({
     );
   }
 
-  if (isError && error) {
+  if (isError) {
     return (
-      <div className="mobile-view__status mobile-view__status--error text-preset-3">
-        Error fetching transactions: {error.message}
-      </div>
+      <ErrorMessage
+        message="Error fetching transactions"
+        error={error?.message || "Unknown error"}
+      />
     );
   }
 
@@ -42,11 +45,7 @@ export const MobileView = ({
     transactionsToDisplay.length === 0 &&
     !isFetching
   ) {
-    return (
-      <div className="mobile-view__status mobile-view__no-transactions text-preset-3">
-        No transactions found.
-      </div>
-    );
+    return <EmptyMessage message="No transactions found." />;
   }
 
   return (

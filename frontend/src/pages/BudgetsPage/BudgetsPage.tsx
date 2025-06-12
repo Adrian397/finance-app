@@ -7,6 +7,8 @@ import { type BudgetDetails, budgetService } from "@/services/budgetService.ts";
 import type { ApiServiceError } from "@/utils/apiUtils.ts";
 import { DotLoader } from "react-spinners";
 import { BudgetList } from "@/pages/BudgetsPage/BudgetList/BudgetList.tsx";
+import { ErrorMessage } from "@/components/ErrorMessage/ErrorMessage.tsx";
+import { EmptyMessage } from "@/components/EmptyMessage/EmptyMessage.tsx";
 
 const BudgetsPage = (): ReactElement => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -24,7 +26,10 @@ const BudgetsPage = (): ReactElement => {
   return (
     <>
       <div className="budgets-page">
-        <div className="budgets-page__heading">
+        <div
+          className="budgets-page__heading"
+          style={{ marginBottom: isLoading ? 0 : "2rem" }}
+        >
           <h1 className="text-preset-1">Budgets</h1>
           <button
             className="btn btn-primary"
@@ -40,9 +45,10 @@ const BudgetsPage = (): ReactElement => {
             </div>
           )}
           {isError && (
-            <div className="error">
-              Error fetching budgets: {error?.message}
-            </div>
+            <ErrorMessage
+              message="Error fetching budgets"
+              error={error?.message || "Unknown error"}
+            />
           )}
           {!isLoading &&
             !isError &&
@@ -53,9 +59,7 @@ const BudgetsPage = (): ReactElement => {
                 <BudgetList budgets={budgetsData} />
               </>
             ) : (
-              <p className="no-budgets-message text-preset-3">
-                You haven't created any budgets yet.
-              </p>
+              <EmptyMessage message="You haven't created any budgets yet." />
             ))}
         </div>
       </div>

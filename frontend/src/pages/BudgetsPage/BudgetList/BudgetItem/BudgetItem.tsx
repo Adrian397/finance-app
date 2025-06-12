@@ -92,7 +92,7 @@ export const BudgetItem = ({ budget, allBudgets }: Props): ReactElement => {
                   onClick={handleDelete}
                   onKeyDown={(e) => e.key === "Enter" && handleDelete()}
                   tabIndex={0}
-                  style={{ color: "red" }}
+                  style={{ color: "#C94736" }}
                   className="dropdown-options-item text-preset-4"
                 >
                   Delete Budget

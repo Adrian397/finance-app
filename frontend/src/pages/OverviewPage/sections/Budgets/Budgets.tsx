@@ -8,6 +8,8 @@ import { useQuery } from "@tanstack/react-query";
 import type { ApiServiceError } from "@/utils/apiUtils.ts";
 import { DotLoader } from "react-spinners";
 import { calculateChartData } from "@/utils/budgetUtils.ts";
+import { ErrorMessage } from "@/components/ErrorMessage/ErrorMessage.tsx";
+import { EmptyMessage } from "@/components/EmptyMessage/EmptyMessage.tsx";
 
 export const Budgets = () => {
   const {
@@ -32,7 +34,15 @@ export const Budgets = () => {
 
   return (
     <section className="overview-page__budgets">
-      <div className="overview-page__budgets--header">
+      <div
+        className="overview-page__budgets--header"
+        style={{
+          marginBottom:
+            isLoading || isError || (budgetsData && budgetsData.length === 0)
+              ? 0
+              : "2rem",
+        }}
+      >
         <h2 className="text-preset-2">Budgets</h2>
         <Link to={ROUTE_PATHS.BUDGETS} className="btn-tertiary">
           See Details
@@ -44,10 +54,11 @@ export const Budgets = () => {
           <DotLoader color="#201F24" size={40} />
         </div>
       )}
-      {isError && error && (
-        <div className="error text-preset-3">
-          <p>Error loading budgets: {error.message}</p>
-        </div>
+      {isError && (
+        <ErrorMessage
+          message="Error fetching budgets"
+          error={error?.message || "Unknown error"}
+        />
       )}
       {!isLoading &&
         !isError &&
@@ -90,9 +101,7 @@ export const Budgets = () => {
             </div>
           </div>
         ) : (
-          <div className="no-budgets-message text-preset-3">
-            You haven't set up any budgets yet.
-          </div>
+          <EmptyMessage message="You haven't set up any budgets yet." />
         ))}
     </section>
   );

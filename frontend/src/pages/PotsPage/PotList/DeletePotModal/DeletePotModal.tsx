@@ -1,63 +1,68 @@
+import React, { type ReactElement } from "react";
 import { Modal } from "@/components/Modal/Modal.tsx";
-import React from "react";
-import { type BudgetDetails, budgetService } from "@/services/budgetService.ts";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { ApiServiceError } from "@/utils/apiUtils.ts";
+import { type Pot, potService } from "@/services/potsService.ts";
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  budget: BudgetDetails | null;
+  pot: Pot | null;
 };
 
-export const DeleteBudgetModal = ({ isOpen, onClose, budget }: Props) => {
+export const DeletePotModal = ({
+  isOpen,
+  onClose,
+  pot,
+}: Props): ReactElement => {
   const queryClient = useQueryClient();
 
-  const deleteBudgetMutation = useMutation<void, ApiServiceError, number>({
-    mutationFn: budgetService.deleteBudget,
+  const deletePotMutation = useMutation<void, ApiServiceError, number>({
+    mutationFn: potService.deletePot,
     onSuccess: () => {
-      toast.success(`Budget for "${budget?.category}" deleted successfully!`);
-      queryClient.invalidateQueries({ queryKey: ["budgets"] });
+      toast.success(`Pot "${pot?.name}" deleted successfully!`);
+      queryClient.invalidateQueries({ queryKey: ["pots"] });
+      queryClient.invalidateQueries({ queryKey: ["userSummary"] });
       onClose();
     },
     onError: (error) => {
-      toast.error(error.message || "Failed to delete budget.");
+      toast.error(error.message || "Failed to delete pot.");
     },
   });
 
   const handleDelete = (event: React.FormEvent) => {
     event.preventDefault();
-    if (!budget) return;
+    if (!pot) return;
 
-    deleteBudgetMutation.mutate(budget.id);
+    deletePotMutation.mutate(pot.id);
   };
 
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={`Delete ${budget?.category || "Budget"}`}
+      title={`Delete ${pot?.name || "Pot"}`}
       className="delete-modal"
     >
       <form onSubmit={handleDelete}>
         <p className="text-preset-4 modal-description">
-          Are you sure you want to delete this budget? This action cannot be
+          Are you sure you want to delete this pot? This action cannot be
           reversed, and all the data inside it will be removed forever.
         </p>
         <div className="action-buttons">
           <button
             type="submit"
-            className={`btn btn-destroy ${deleteBudgetMutation.isPending ? "is-pending" : ""}`}
-            disabled={deleteBudgetMutation.isPending}
+            className={`btn btn-destroy ${deletePotMutation.isPending ? "is-pending" : ""}`}
+            disabled={deletePotMutation.isPending}
           >
-            {deleteBudgetMutation.isPending ? (
+            {deletePotMutation.isPending ? (
               <ClipLoader
                 color={"#ffffff"}
                 loading={true}
                 size={26}
-                aria-label="Deleting budget..."
+                aria-label="Deleting pot..."
               />
             ) : (
               "Yes, Confirm Deletion"

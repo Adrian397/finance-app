@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Budget;
+use App\Entity\Pot;
 use App\Entity\Transaction;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -38,6 +39,12 @@ class DefaultAccountSetupService
         $jsonString = file_get_contents($dataJsonPath);
         $jsonData = json_decode($jsonString, true);
 
+        if (isset($jsonData['balance'])) {
+            $user->setBalance((string)($jsonData['balance']['current'] ?? 0.00));
+            $user->setTotalIncome((string)($jsonData['balance']['income'] ?? 0.00));
+            $user->setTotalExpenses((string)($jsonData['balance']['expenses'] ?? 0.00));
+        }
+
         if (isset($jsonData['transactions']) && is_array($jsonData['transactions'])) {
             $this->createDefaultTransactions($user, $jsonData['transactions']);
         } else {
@@ -48,6 +55,12 @@ class DefaultAccountSetupService
             $this->createDefaultBudgets($user, $jsonData['budgets']);
         } else {
             $this->logger->warning("Default Data: 'budgets' key not found in data.json.", ['user_id' => $user->getId()]);
+        }
+
+        if (isset($jsonData['pots']) && is_array($jsonData['pots'])) {
+            $this->createDefaultPots($user, $jsonData['pots']);
+        } else {
+            $this->logger->warning("Default Data: 'pots' key not found in data.json.", ['user_id' => $user->getId()]);
         }
 
         try {
@@ -102,6 +115,20 @@ class DefaultAccountSetupService
             $budget->setTheme($item['theme'] ?? null);
 
             $this->entityManager->persist($budget);
+        }
+    }
+
+    private function createDefaultPots(User $user, array $potsData): void
+    {
+        foreach ($potsData as $item) {
+            $pot = new Pot();
+            $pot->setOwner($user);
+            $pot->setName($item['name'] ?? 'Unnamed Pot');
+            $pot->setCurrentAmount((string)($item['total'] ?? 0.0));
+            $pot->setTargetAmount((string)($item['target'] ?? 0.0));
+            $pot->setTheme($item['theme'] ?? null);
+
+            $this->entityManager->persist($pot);
         }
     }
 }

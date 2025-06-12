@@ -116,11 +116,11 @@ export const EditBudgetModal = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={`Edit ${budget?.category || "Budget"}`}
+      title="Edit Budget"
       className="budget-edit-modal"
     >
       <form onSubmit={handleSubmit}>
-        <p className="text-preset-4 description">
+        <p className="text-preset-4 modal-description">
           As your budgets change, feel free to update your spending limits.
         </p>
         <Select
@@ -139,6 +139,7 @@ export const EditBudgetModal = ({
           onChange={(e) => setAmount(e.target.value)}
           value={amount}
           showDollarIcon
+          placeholder="e.g. 2000"
           id="edit-maximum-spend"
           error={fieldErrors.maximumAmount}
         />

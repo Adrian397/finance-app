@@ -53,7 +53,7 @@ export const Table = ({
             </tr>
           )}
           {isError && error && (
-            <tr className="error">
+            <tr className="error-desktop">
               <td colSpan={4} className="text-preset-3">
                 Error fetching transactions: {error.message}
               </td>
@@ -81,7 +81,7 @@ export const Table = ({
                   })}
                 </td>
                 <td
-                  className={` text-preset-4b
+                  className={`text-preset-4b
                         ${
                           transaction.type === "income"
                             ? "amount-income"
@@ -102,10 +102,7 @@ export const Table = ({
             transactionsToDisplay.length === 0 &&
             !isFetching && (
               <tr>
-                <td
-                  colSpan={4}
-                  className="no-transactions-message text-preset-3"
-                >
+                <td colSpan={4} className="empty-message-desktop text-preset-3">
                   No transactions found.
                 </td>
               </tr>

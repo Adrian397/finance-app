@@ -10,6 +10,8 @@ import {
 import type { ApiServiceError } from "@/utils/apiUtils.ts";
 import { useQuery } from "@tanstack/react-query";
 import { DotLoader } from "react-spinners";
+import { EmptyMessage } from "@/components/EmptyMessage/EmptyMessage.tsx";
+import { ErrorMessage } from "@/components/ErrorMessage/ErrorMessage.tsx";
 
 const ITEMS_TO_SHOW = 4;
 export const Transactions = (): ReactElement => {
@@ -53,10 +55,11 @@ export const Transactions = (): ReactElement => {
           <DotLoader color="#201F24" size={40} />
         </div>
       )}
-      {isError && error && (
-        <div className="error text-preset-3">
-          <p>Error loading transactions: {error.message}</p>
-        </div>
+      {isError && (
+        <ErrorMessage
+          message="Error loading transactions"
+          error={error?.message || "Unknown error"}
+        />
       )}
       {!isLoading && !isError && (
         <ul className="overview-page__transactions--list">
@@ -98,9 +101,7 @@ export const Transactions = (): ReactElement => {
               </li>
             ))
           ) : (
-            <div className="no-transactions-message text-preset-3">
-              No recent transactions.
-            </div>
+            <EmptyMessage message="No recent transactions." />
           )}
         </ul>
       )}

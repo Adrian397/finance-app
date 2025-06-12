@@ -1,0 +1,125 @@
+@use '../../assets/styles/variables' as vars;
+
+.pots-page {
+  &__heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: vars.$space-xl;
+
+    h1 {
+      color: vars.$gray-900;
+    }
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: vars.$space-lg;
+  }
+
+  &__pot {
+    background-color: vars.$white;
+    padding: vars.$space-lg;
+    border-radius: 12px;
+
+    &--header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: vars.$space-xl;
+
+      .dropdown-wrapper {
+        .dropdown-options-list {
+          right: 0;
+          top: 1.5rem;
+          width: 134px;
+        }
+      }
+
+      & > div:nth-of-type(1) {
+        display: flex;
+        align-items: center;
+        gap: vars.$space-md;
+
+        h2 {
+          color: vars.$gray-900;
+        }
+
+        .theme-color {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+        }
+      }
+
+      & > div:nth-of-type(2) {
+        button {
+          background-color: transparent;
+          cursor: pointer;
+          border: none;
+
+          img {
+            width: 16px;
+            height: 16px;
+          }
+        }
+      }
+    }
+
+    &--overview {
+      display: flex;
+      flex-direction: column;
+
+      &-saved {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: vars.$space-md;
+
+        span:nth-of-type(1) {
+          color: vars.$gray-500;
+        }
+
+        span:nth-of-type(2) {
+          color: vars.$gray-900;
+        }
+      }
+
+      &-bar {
+        width: 100%;
+        height: 8px;
+        border-radius: 4px;
+        background-color: vars.$beige-100;
+        margin-bottom: 13px;
+      }
+
+      &-progress {
+        height: 100%;
+        border-radius: 4px;
+      }
+
+      &-percentage {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 42px;
+
+        span:nth-of-type(1),
+        span:nth-of-type(2) {
+          color: vars.$gray-500;
+        }
+      }
+    }
+
+    &--action-btns {
+      display: flex;
+      align-items: center;
+      gap: vars.$space-md;
+
+      button {
+        flex: 1;
+      }
+    }
+  }
+}
