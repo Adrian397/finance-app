@@ -25,14 +25,19 @@ const PotsPage = (): ReactElement => {
   return (
     <>
       <div className="pots-page">
-        <div className="pots-page__heading">
+        <div
+          className="pots-page__heading"
+          style={{ marginBottom: isLoading ? 0 : "2rem" }}
+        >
           <h1 className="text-preset-1">Pots</h1>
-          <button
-            className="btn btn-primary"
-            onClick={() => setIsAddModalOpen(true)}
-          >
-            + Add New Pot
-          </button>
+          {!isError && !isLoading && (
+            <button
+              className="btn btn-primary"
+              onClick={() => setIsAddModalOpen(true)}
+            >
+              + Add New Pot
+            </button>
+          )}
         </div>
         {isLoading && (
           <div className="loading">
@@ -45,11 +50,13 @@ const PotsPage = (): ReactElement => {
             error={error?.message || "Unknown error"}
           />
         )}
-        {!isLoading && !isError && potsData && potsData.length > 0 ? (
-          <PotList pots={potsData} />
-        ) : (
-          <EmptyMessage message="You haven't created any savings pots yet." />
-        )}
+        {!isLoading &&
+          !isError &&
+          (potsData && potsData.length > 0 ? (
+            <PotList pots={potsData} />
+          ) : (
+            <EmptyMessage message="You haven't created any savings pots yet." />
+          ))}
       </div>
       <AddPotModal
         isOpen={isAddModalOpen}

@@ -1,5 +1,6 @@
 import { API_BASE_URL, handleApiResponse } from "@/utils/apiUtils.ts";
 import type { AuthUser } from "@/stores/authStore.ts";
+import { getAuthToken } from "@/utils/authUtils.ts";
 
 export type UserSignupData = {
   name: string;
@@ -15,6 +16,12 @@ export type UserLoginCredentials = {
 export type SignupApiResponse = {
   message: string;
   user?: AuthUser;
+};
+
+export type UserSummary = {
+  currentBalance: number;
+  income: number;
+  expenses: number;
 };
 
 export type LoginApiResponse = {
@@ -67,7 +74,20 @@ const serviceDef = () => {
     return handleApiResponse<AuthUser>(response);
   };
 
-  return { signup, login, getMe };
+  const getUserSummary = async (): Promise<UserSummary> => {
+    const token = getAuthToken();
+
+    const response = await fetch(`${API_BASE_URL}/user/summary`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return handleApiResponse<UserSummary>(response);
+  };
+
+  return { signup, login, getMe, getUserSummary };
 };
 
 export const authService = serviceDef();

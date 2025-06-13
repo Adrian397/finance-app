@@ -82,4 +82,32 @@ class TransactionRepository extends ServiceEntityRepository
             'totalItems' => count($paginator),
         ];
     }
+
+    /**
+     * Calculates the total income or expenses for a user within a specific date range.
+     */
+    public function calculateTotalsForMonth(User $user, string $type): float
+    {
+
+        $startOfMonth = new \DateTimeImmutable('2024-08-01 00:00:00');
+        $endOfMonth = new \DateTimeImmutable('2024-08-31 23:59:59');
+
+        $qb = $this->createQueryBuilder('t')
+            ->select('SUM(t.amount) as total')
+            ->where('t.owner = :user')
+            ->andWhere('t.date BETWEEN :start AND :end')
+            ->setParameter('user', $user)
+            ->setParameter('start', $startOfMonth)
+            ->setParameter('end', $endOfMonth);
+
+        if ($type === 'income') {
+            $qb->andWhere('t.amount > 0');
+        } elseif ($type === 'expense') {
+            $qb->andWhere('t.amount < 0');
+        }
+
+        $result = $qb->getQuery()->getSingleScalarResult();
+
+        return abs((float)($result ?? 0.0));
+    }
 }

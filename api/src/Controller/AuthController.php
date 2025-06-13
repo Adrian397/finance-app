@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\TransactionRepository;
 use App\Service\DefaultAccountSetupService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -108,5 +109,27 @@ class AuthController extends AbstractController
             'email' => $user->getEmail(),
             'name' => $user->getName(),
         ]);
+    }
+
+    #[Route('/api/user/summary', name: 'api_user_summary', methods: ['GET'])]
+    public function getUserSummary(
+        #[CurrentUser] ?User  $user,
+        TransactionRepository $transactionRepository
+    ): JsonResponse
+    {
+        if (!$user) {
+            return $this->json(['message' => 'Authentication required'], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
+        $currentMonthIncome = $transactionRepository->calculateTotalsForMonth($user, 'income');
+        $currentMonthExpenses = $transactionRepository->calculateTotalsForMonth($user, 'expense');
+
+        $summaryData = [
+            'currentBalance' => (float)$user->getBalance(),
+            'income' => $currentMonthIncome,
+            'expenses' => $currentMonthExpenses,
+        ];
+
+        return $this->json($summaryData);
     }
 }

@@ -31,12 +31,14 @@ const BudgetsPage = (): ReactElement => {
           style={{ marginBottom: isLoading ? 0 : "2rem" }}
         >
           <h1 className="text-preset-1">Budgets</h1>
-          <button
-            className="btn btn-primary"
-            onClick={() => setIsAddModalOpen(true)}
-          >
-            + Add New Budget
-          </button>
+          {!isError && !isLoading && (
+            <button
+              className="btn btn-primary"
+              onClick={() => setIsAddModalOpen(true)}
+            >
+              + Add New Budget
+            </button>
+          )}
         </div>
         <div className="budgets-page__main">
           {isLoading && (
@@ -54,10 +56,10 @@ const BudgetsPage = (): ReactElement => {
             !isError &&
             budgetsData &&
             (budgetsData.length > 0 ? (
-              <>
+              <div>
                 <SpendingSummary budgets={budgetsData} />
                 <BudgetList budgets={budgetsData} />
-              </>
+              </div>
             ) : (
               <EmptyMessage message="You haven't created any budgets yet." />
             ))}

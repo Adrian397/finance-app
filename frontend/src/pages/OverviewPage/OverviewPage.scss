@@ -41,6 +41,10 @@
     margin-bottom: vars.$space-xl;
     flex-wrap: wrap;
 
+    & > div {
+      height: 120px;
+    }
+
     &--balance {
       background-color: vars.$gray-900;
 
@@ -89,6 +93,24 @@
     background-color: vars.$white;
     border-radius: 12px;
     margin-bottom: vars.$space-lg;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+
+    .error-message,
+    .empty-message {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .loading {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
     @media(min-width: 700px) {
       padding: vars.$space-xl;

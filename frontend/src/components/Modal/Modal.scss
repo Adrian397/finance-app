@@ -64,6 +64,11 @@
 .modal-title {
   color: vars.$gray-900;
   font-size: 1.25rem;
+  max-width: 200px;
+
+  @media (min-width: 520px) {
+    max-width: none;
+  }
 
   @media (min-width: 880px) {
     font-size: 2rem;
