@@ -3,7 +3,6 @@
 .overview-page {
   display: flex;
   flex-direction: column;
-  min-height: 0;
 
   &__heading {
     margin-bottom: vars.$space-xl;
@@ -42,7 +41,7 @@
     flex-wrap: wrap;
 
     & > div {
-      height: 120px;
+      min-height: 120px;
     }
 
     &--balance {
@@ -93,7 +92,7 @@
     background-color: vars.$white;
     border-radius: 12px;
     margin-bottom: vars.$space-lg;
-    min-height: 220px;
+    min-height: 242px;
     display: flex;
     flex-direction: column;
 
@@ -216,10 +215,9 @@
     background-color: vars.$white;
     border-radius: 12px;
     padding: vars.$space-lg vars.$space-md-plus;
-    overflow-y: auto;
-    flex: 1;
     display: flex;
     flex-direction: column;
+    min-height: 431px;
 
     @media(min-width: 700px) {
       padding: vars.$space-xl;
@@ -318,6 +316,8 @@
     margin-bottom: vars.$space-lg;
     overflow-x: auto;
     min-height: 360px;
+    max-height: 490px;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
 
@@ -384,7 +384,11 @@
       &-container {
         width: 240px;
         height: 240px;
-        flex: 2;
+
+
+        @media(min-width: 700px) {
+          flex: 2;
+        }
 
         @media(min-width: 1250px) {
           width: 220px;
@@ -404,14 +408,12 @@
 
       &-legend {
         display: grid;
+        grid-template-columns: repeat(1, 1fr);
         gap: vars.$space-md;
-        width: auto;
 
         @media(max-width: 700px) {
           width: 100%;
-          grid-template-columns: repeat(2, 1fr) !important;
-          grid-template-rows: auto !important;
-          grid-auto-flow: unset !important;
+          grid-template-columns: repeat(2, 1fr);
         }
 
         &-pot {
@@ -444,8 +446,18 @@
     background-color: vars.$white;
     padding: vars.$space-lg vars.$space-md-plus;
     border-radius: 12px;
-    overflow-y: auto;
-    flex: 1;
+    min-height: 327px;
+    display: flex;
+    flex-direction: column;
+
+    .loading,
+    .error-message,
+    .empty-message {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
     @media(min-width: 700px) {
       padding: vars.$space-xl;
@@ -470,13 +482,25 @@
       flex-direction: column;
       gap: vars.$space-sm;
 
+      &-item:nth-of-type(1) {
+        border-left: 4px solid vars.$green;
+      }
+
+      &-item:nth-of-type(2) {
+        border-left: 4px solid vars.$yellow;
+      }
+
+      &-item:nth-of-type(3) {
+        border-left: 4px solid vars.$cyan;
+      }
+
+
       &-item {
         display: flex;
         justify-content: space-between;
         border-radius: 8px;
         padding: vars.$space-md-plus vars.$space-md;
         background-color: vars.$beige-100;
-        border-left: 4px solid vars.$green;
 
         span:nth-of-type(1) {
           color: vars.$gray-500;

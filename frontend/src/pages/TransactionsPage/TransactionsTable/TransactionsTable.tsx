@@ -11,7 +11,7 @@ type Props = {
   error: ApiServiceError | null;
 };
 
-export const Table = ({
+export const TransactionsTable = ({
   isLoading,
   isError,
   paginatedData,
@@ -31,7 +31,7 @@ export const Table = ({
   return (
     <div className="transactions-page__table-wrapper">
       <table
-        className="transactions-page__table"
+        className="table"
         style={{
           height: isTableFullHeight ? "100%" : "",
         }}

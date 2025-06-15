@@ -15,7 +15,7 @@ type Props = {
   categoryOptions: SelectOption[];
 };
 
-export const Filters = ({
+export const TransactionsFilters = ({
   setSelectedCategory,
   setSortBy,
   setSearchTerm,
@@ -66,9 +66,9 @@ export const Filters = ({
     <div className="transactions-page__filters">
       <Input
         type="text"
-        placeholder="Search transaction..."
+        placeholder="Search transactions..."
         onChange={(e) => setSearchTerm(e.target.value)}
-        name="transactionSearch"
+        name="search-transactions"
         value={searchTerm}
         showSearchIcon
       />

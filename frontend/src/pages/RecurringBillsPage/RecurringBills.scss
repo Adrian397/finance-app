@@ -1,0 +1,399 @@
+@use '../../assets/styles/variables' as vars;
+
+
+.bills-page {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  &__heading {
+    color: vars.$gray-900;
+    margin-bottom: vars.$space-xl;
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    gap: vars.$space-md-plus;
+    flex-grow: 1;
+
+    @media(min-width: 1100px) {
+      flex-direction: row;
+    }
+  }
+
+  &__overview {
+    display: flex;
+    gap: vars.$space-lg;
+    flex-direction: column;
+
+    @media(min-width: vars.$breakpoint-md) {
+      flex-direction: row;
+    }
+
+    @media(min-width: 1100px) {
+      flex-direction: column;
+      flex: 2;
+    }
+  }
+
+  .mobile-error,
+  .mobile-loading {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__list {
+    flex: 5;
+    background-color: vars.$white;
+    padding: vars.$space-lg vars.$space-md-plus;
+    border-radius: 12px;
+
+    @media(min-width: vars.$breakpoint-md) {
+      padding: vars.$space-xl;
+    }
+  }
+
+  &__filters {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: vars.$space-lg;
+    gap: vars.$space-lg;
+
+    .mobile-filter {
+      display: block;
+
+      &__button {
+        background-color: transparent;
+        border: 0;
+        cursor: pointer;
+
+        img {
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      .dropdown-options-list {
+        top: 2rem;
+        right: 0;
+        width: 113px;
+      }
+
+      @media(min-width: vars.$breakpoint-md) {
+        display: none;
+      }
+    }
+
+    .input-group {
+      width: 320px;
+      max-width: 100%;
+    }
+
+    .select-group__control {
+      width: 113px;
+    }
+
+    &--sort-wrapper {
+      display: flex;
+      align-items: center;
+      gap: vars.$space-xs;
+
+      span {
+        display: none;
+
+        @media(min-width: vars.$breakpoint-md) {
+          display: inline-block;
+        }
+      }
+
+      .select-group__control {
+        display: none;
+
+        @media(min-width: vars.$breakpoint-md) {
+          display: flex;
+        }
+      }
+    }
+  }
+
+  &__table-wrapper {
+    flex-grow: 1;
+    overflow-y: auto;
+    min-height: 0;
+
+    .loading {
+      text-align: center;
+
+      td {
+        border-bottom: 0 !important;
+        padding: 0 !important;
+      }
+
+      span {
+        display: inline-block !important;
+      }
+    }
+
+    .error-desktop {
+      text-align: center;
+      color: vars.$red;
+
+      td {
+        border-bottom: 0 !important;
+        padding: 0 !important;
+        font-weight: 400;
+      }
+    }
+
+    .table {
+      tbody {
+        .bill-title {
+          display: flex;
+          align-items: center;
+          gap: vars.$space-md;
+
+          span {
+            color: vars.$gray-900;
+          }
+
+          img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            flex-shrink: 0;
+          }
+        }
+
+        .due-date {
+          div {
+            display: flex;
+            align-items: center;
+            gap: vars.$space-xs;
+
+            span {
+              color: vars.$gray-500;
+            }
+
+            img {
+              width: 16px;
+              height: 16px;
+            }
+          }
+        }
+
+        .amount.upcomming {
+          color: vars.$red;
+        }
+
+        .due-date.paid {
+          div {
+            span {
+              color: vars.$green;
+            }
+          }
+        }
+
+
+        .amount {
+          text-align: right;
+          color: vars.$gray-900;
+        }
+      }
+
+    }
+  }
+
+  &__total-bills {
+    background-color: vars.$gray-900;
+    border-radius: 12px;
+    padding: vars.$space-lg vars.$space-md-plus;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: vars.$space-md;
+
+    @media(min-width: vars.$breakpoint-md) {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: vars.$space-lg;
+
+    }
+
+    @media(min-width: 1100px) {
+      gap: 0;
+    }
+
+    & > div {
+      display: flex;
+      flex-direction: column;
+      gap: vars.$space-sm;
+    }
+
+    @media(min-width: 1100px) {
+      flex: unset;
+    }
+
+    img {
+      margin-bottom: 0;
+
+      @media(min-width: vars.$breakpoint-md) {
+        margin-bottom: vars.$space-xl;
+      }
+    }
+
+    h2 {
+      color: vars.$white;
+    }
+
+    p {
+      color: vars.$white;
+    }
+  }
+
+  &__summary {
+    background-color: vars.$white;
+    padding: vars.$space-md-plus;
+    border-radius: 12px;
+    flex: 1;
+    min-height: 204px;
+    display: flex;
+    flex-direction: column;
+
+    .loading {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @media(min-width: 1100px) {
+      flex: unset;
+    }
+
+    ul {
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+
+
+      li {
+        padding: vars.$space-md 0;
+        border-bottom: 1px solid vars.$gray-100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        span:nth-of-type(1) {
+          color: vars.$gray-500;
+        }
+
+        span:nth-of-type(2) {
+          color: vars.$gray-900;
+        }
+      }
+
+      li:first-child {
+        padding-top: 0;
+      }
+
+      li:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+
+        span {
+          color: vars.$red;
+        }
+      }
+    }
+
+    h2 {
+      color: vars.$gray-900;
+      margin-bottom: vars.$space-md-plus;
+    }
+  }
+
+  .mobile-bills-list {
+    ul {
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__item {
+      display: flex;
+      flex-direction: column;
+      gap: vars.$space-xs;
+      padding: vars.$space-md-plus 0;
+      border-bottom: 1px solid vars.$gray-100;
+
+      &--name {
+        display: flex;
+        align-items: center;
+        gap: vars.$space-md;
+
+        img {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+        }
+      }
+
+      &--date-amount {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        & > div {
+          display: flex;
+          align-items: center;
+          gap: vars.$space-xs;
+
+          span {
+            color: vars.$gray-500;
+          }
+
+          img {
+            height: 16px;
+            width: 16px;
+          }
+        }
+
+        .mobile-bills__item--amount {
+          color: vars.$gray-900;
+        }
+
+        .mobile-bills__item--amount.upcomming {
+          color: vars.$red;
+        }
+      }
+
+      &--date-amount.paid {
+        & > div {
+          span {
+            color: vars.$green;
+          }
+        }
+      }
+    }
+
+    &__item:first-child {
+      padding-top: 0;
+    }
+
+    &__item:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+  }
+}

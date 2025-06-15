@@ -4,13 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { ApiServiceError } from "@/utils/apiUtils.ts";
 import { DotLoader } from "react-spinners";
 import { ErrorMessage } from "@/components/ErrorMessage/ErrorMessage.tsx";
-
-const formatCurrency = (value: number) => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(value);
-};
+import { formatCurrency } from "@/utils/general.ts";
 
 export const Summary = (): ReactElement => {
   const { data, isLoading, isError, error } = useQuery<

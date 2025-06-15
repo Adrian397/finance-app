@@ -8,21 +8,12 @@ import {
 } from "@/services/transactionService.ts";
 import type { ApiServiceError } from "@/utils/apiUtils.ts";
 import { useQuery } from "@tanstack/react-query";
-import { Table } from "@/pages/TransactionsPage/Table/Table.tsx";
-import type { SelectOption } from "@/components/Select/Select.tsx";
-import { Filters } from "@/pages/TransactionsPage/Filters/Filters.tsx";
-import { MobileView } from "@/pages/TransactionsPage/MobileView/MobileView.tsx";
-import { categoryOptions } from "@/utils/general.ts";
+import { TransactionsTable } from "@/pages/TransactionsPage/TransactionsTable/TransactionsTable.tsx";
+import { TransactionsFilters } from "@/pages/TransactionsPage/TransactionsFilters/TransactionsFilters.tsx";
+import { TransactionsMobileView } from "@/pages/TransactionsPage/TransactionsMobileView/TransactionsMobileView.tsx";
+import { categoryOptions, sortByOptions } from "@/utils/general.ts";
 import { useSearchParams } from "react-router-dom";
-
-const sortByOptions: SelectOption[] = [
-  { value: "latest", label: "Latest" },
-  { value: "oldest", label: "Oldest" },
-  { value: "name_asc", label: "A to Z" },
-  { value: "name_desc", label: "Z to A" },
-  { value: "amount_desc", label: "Highest" },
-  { value: "amount_asc", label: "Lowest" },
-];
+import { useDebounce } from "@/hooks/useDebounce.ts";
 
 const ITEMS_PER_PAGE = 10;
 const TRANSACTIONS_MOBILE_BREAKPOINT = 768;
@@ -35,7 +26,7 @@ const TransactionsPage = (): ReactElement => {
   const [sortBy, setSortBy] = useState(sortByOptions[0].value as string);
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const [isMobileView, setIsMobileView] = useState(
     window.innerWidth <= TRANSACTIONS_MOBILE_BREAKPOINT,
@@ -51,16 +42,8 @@ const TransactionsPage = (): ReactElement => {
   }, []);
 
   useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-      setCurrentPage(1);
-    }, 500);
-    return () => clearTimeout(handler);
-  }, [searchTerm]);
-
-  useEffect(() => {
     setCurrentPage(1);
-  }, [sortBy, selectedCategory]);
+  }, [debouncedSearchTerm, sortBy, selectedCategory]);
 
   const queryParams: GetTransactionsParams = useMemo(
     () => ({
@@ -105,7 +88,7 @@ const TransactionsPage = (): ReactElement => {
     <div className="transactions-page">
       <h1 className="transactions-page__heading text-preset-1">Transactions</h1>
       <div className="transactions-page__container">
-        <Filters
+        <TransactionsFilters
           sortBy={sortBy}
           searchTerm={searchTerm}
           setSelectedCategory={setSelectedCategory}
@@ -116,9 +99,9 @@ const TransactionsPage = (): ReactElement => {
           categoryOptions={categoryOptions}
         />
         {isMobileView ? (
-          <MobileView {...viewProps} />
+          <TransactionsMobileView {...viewProps} />
         ) : (
-          <Table {...viewProps} />
+          <TransactionsTable {...viewProps} />
         )}
         {paginationInfo && paginationInfo.totalPages > 1 && (
           <Pagination

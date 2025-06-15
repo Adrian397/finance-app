@@ -27,11 +27,6 @@ export const Budgets = () => {
     [budgetsData],
   );
 
-  const maxRowsPerColumn = 4;
-  const numberOfItems = budgetsData?.length || 0;
-  const numberOfColumns = Math.ceil(numberOfItems / maxRowsPerColumn);
-  const gridTemplateColumns = `repeat(${numberOfColumns}, 1fr)`;
-
   return (
     <section className="overview-page__budgets">
       <div
@@ -71,14 +66,7 @@ export const Budgets = () => {
                 totalBudget={totalBudget}
               />
             </div>
-            <div
-              className="overview-page__budgets--chart-legend"
-              style={{
-                gridTemplateColumns,
-                gridAutoFlow: "column",
-                gridTemplateRows: `repeat(${maxRowsPerColumn}, auto)`,
-              }}
-            >
+            <div className="overview-page__budgets--chart-legend">
               {budgetsData.map((budget, index) => (
                 <div
                   className="overview-page__budgets--chart-legend-pot"

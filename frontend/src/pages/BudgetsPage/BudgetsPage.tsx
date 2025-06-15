@@ -56,10 +56,10 @@ const BudgetsPage = (): ReactElement => {
             !isError &&
             budgetsData &&
             (budgetsData.length > 0 ? (
-              <div>
+              <>
                 <SpendingSummary budgets={budgetsData} />
                 <BudgetList budgets={budgetsData} />
-              </div>
+              </>
             ) : (
               <EmptyMessage message="You haven't created any budgets yet." />
             ))}

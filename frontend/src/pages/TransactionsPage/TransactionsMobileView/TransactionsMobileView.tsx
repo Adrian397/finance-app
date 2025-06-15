@@ -13,7 +13,7 @@ type Props = {
   error: ApiServiceError | null;
 };
 
-export const MobileView = ({
+export const TransactionsMobileView = ({
   isLoading,
   isError,
   paginatedData,

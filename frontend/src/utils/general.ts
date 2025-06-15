@@ -26,3 +26,33 @@ export const themeOptions: SelectOption[] = [
   { value: "#C94736", label: "Red" },
   { value: "#CAB361", label: "Gold" },
 ];
+
+export const sortByOptions: SelectOption[] = [
+  { value: "latest", label: "Latest" },
+  { value: "oldest", label: "Oldest" },
+  { value: "name_asc", label: "A to Z" },
+  { value: "name_desc", label: "Z to A" },
+  { value: "amount_desc", label: "Highest" },
+  { value: "amount_asc", label: "Lowest" },
+];
+
+export const getDaySuffix = (day: number) => {
+  if (day > 3 && day < 21) return "th";
+  switch (day % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
+};
+
+export const formatCurrency = (value: number) => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(value);
+};
