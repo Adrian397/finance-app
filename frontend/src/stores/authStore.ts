@@ -8,12 +8,18 @@ export type AuthUser = {
   email: string;
 };
 
+export type TokenPayload = {
+  token: string;
+  refreshToken: string;
+};
+
 type AuthState = {
   token: string | null;
+  refreshToken: string | null;
   user: AuthUser | null;
   isAuthenticated: boolean;
   isLoadingUser: boolean;
-  setToken: (token: string | null) => void;
+  setTokens: (payload: Partial<TokenPayload> | null) => void;
   setUser: (user: AuthUser | null) => void;
   fetchCurrentUser: () => Promise<void>;
   logout: () => void;
@@ -23,12 +29,21 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
       token: null,
+      refreshToken: null,
       user: null,
       isAuthenticated: false,
       isLoadingUser: false,
 
-      setToken: (token) => {
-        set({ token, isAuthenticated: !!token });
+      setTokens: (payload) => {
+        const token = payload?.token || null;
+        const refreshToken = payload?.refreshToken || null;
+
+        set({
+          token,
+          refreshToken,
+          isAuthenticated: !!token,
+        });
+
         if (token) {
           get().fetchCurrentUser();
         } else {
@@ -66,6 +81,7 @@ export const useAuthStore = create<AuthState>()(
         localStorage.removeItem("auth-storage");
         set({
           token: null,
+          refreshToken: null,
           user: null,
           isAuthenticated: false,
           isLoadingUser: false,
@@ -75,7 +91,10 @@ export const useAuthStore = create<AuthState>()(
     {
       name: "auth-storage",
       storage: createJSONStorage(() => localStorage),
-      partialize: (state) => ({ token: state.token }),
+      partialize: (state) => ({
+        token: state.token,
+        refreshToken: state.refreshToken,
+      }),
       onRehydrateStorage: () => {
         return (state, error) => {
           if (error) {

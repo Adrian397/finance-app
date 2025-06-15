@@ -26,7 +26,7 @@ export type UserSummary = {
 
 export type LoginApiResponse = {
   token: string;
-  // refresh_token?: string;
+  refresh_token?: string;
 };
 
 const serviceDef = () => {

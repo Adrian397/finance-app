@@ -26,7 +26,7 @@ export const LoginForm = ({ onModeChange }: Props): ReactElement => {
   );
 
   const navigate = useNavigate();
-  const setToken = useAuthStore((state) => state.setToken);
+  const setTokens = useAuthStore((state) => state.setTokens);
 
   const clearError = () => {
     setGeneralLoginError(null);
@@ -41,7 +41,10 @@ export const LoginForm = ({ onModeChange }: Props): ReactElement => {
     mutationFn: authService.login,
     onSuccess: (data) => {
       toast.success("Login successful!");
-      setToken(data.token);
+      setTokens({
+        token: data.token,
+        refreshToken: data.refresh_token || undefined,
+      });
       clearError();
       navigate(ROUTE_PATHS.OVERVIEW);
     },
