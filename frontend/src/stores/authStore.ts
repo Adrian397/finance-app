@@ -1,6 +1,9 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { authService } from "@/services/authService.ts";
+import {
+  authService,
+  type RefreshTokenResponse,
+} from "@/services/authService.ts";
 
 export type AuthUser = {
   id: number;
@@ -22,6 +25,7 @@ type AuthState = {
   setTokens: (payload: Partial<TokenPayload> | null) => void;
   setUser: (user: AuthUser | null) => void;
   fetchCurrentUser: () => Promise<void>;
+  attemptRefreshToken: () => Promise<boolean>;
   logout: () => void;
 };
 
@@ -74,6 +78,29 @@ export const useAuthStore = create<AuthState>()(
           console.error("Failed to fetch current user:", error);
           get().logout();
           set({ isLoadingUser: false });
+        }
+      },
+
+      attemptRefreshToken: async () => {
+        const currentRefreshToken = get().refreshToken;
+        if (!currentRefreshToken) {
+          return false;
+        }
+
+        try {
+          const response: RefreshTokenResponse =
+            await authService.refreshToken(currentRefreshToken);
+
+          get().setTokens({
+            token: response.token,
+            refreshToken: response.refresh_token,
+          });
+
+          return true;
+        } catch (error) {
+          console.error("Failed to refresh token:", error);
+          get().logout();
+          return false;
         }
       },
 

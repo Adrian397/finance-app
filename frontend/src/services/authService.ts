@@ -29,6 +29,11 @@ export type LoginApiResponse = {
   refresh_token?: string;
 };
 
+export type RefreshTokenResponse = {
+  token: string;
+  refresh_token: string;
+};
+
 const serviceDef = () => {
   const signup = async (
     userData: UserSignupData,
@@ -87,7 +92,24 @@ const serviceDef = () => {
     return handleApiResponse<UserSummary>(response);
   };
 
-  return { signup, login, getMe, getUserSummary };
+  const refreshToken = async (
+    refreshTokenValue: string,
+  ): Promise<RefreshTokenResponse> => {
+    const response = await fetch(`${API_BASE_URL}/token/refresh`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        refresh_token: refreshTokenValue,
+      }),
+    });
+
+    return handleApiResponse<RefreshTokenResponse>(response);
+  };
+
+  return { signup, login, getMe, getUserSummary, refreshToken };
 };
 
 export const authService = serviceDef();
