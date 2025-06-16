@@ -24,14 +24,14 @@ This project is built with a modern full-stack architecture, fully containerized
   
 # 🚀 Getting Started
 1. Clone the project to your local machine
-2. Copy and edit placeholders inside
+2. Copy and edit placeholders inside `.env`
  ````
  cp .env.sample .env
  ```` 
-3. Set DATABASE_URL and APP_SECRET by creating /api/.env.local
+3. Set `DATABASE_URL` and `APP_SECRET` by creating `/api/.env.local`. You need to replace `${MYSQL_USER}`, `${MYSQL_PASSWORD}`, `${MYSQL_DATABASE}` with values from root `.env` file
  ```
- DATABASE_URL = mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@db:3306/${MYSQL_DATABASE}?serverVersion=8.0&charset=utf8mb4 (copy values from root .env)
  APP_SECRET = generate using - openssl rand -hex 32
+ DATABASE_URL="mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@db:3306/${MYSQL_DATABASE}?serverVersion=8.0&charset=utf8mb4"
  ```
 4. Build project
   ```
