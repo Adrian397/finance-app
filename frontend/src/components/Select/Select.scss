@@ -24,6 +24,14 @@
     background-color: transparent;
     position: relative;
 
+    &:hover {
+      border-color: vars.$gray-500;
+    }
+
+    &:active {
+      border-color: vars.$gray-900;
+    }
+
     & > div {
       display: flex;
       align-items: center;
