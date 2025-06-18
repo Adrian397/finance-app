@@ -25,6 +25,9 @@ WORKDIR /var/www/html
 # This includes composer.json, composer.lock, bin/console, src/, config/, etc.
 COPY . .
 
+# Add vendor/bin to the PATH environment variable
+ENV PATH="/var/www/html/vendor/bin:${PATH}"
+
 # Install dependencies (now that all files, including bin/console, are present)
 # --no-dev should be used for production builds
 RUN composer install --no-dev --no-interaction --optimize-autoloader --no-progress --prefer-dist
