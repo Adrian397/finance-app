@@ -25,12 +25,12 @@ WORKDIR /var/www/html
 # This includes composer.json, composer.lock, bin/console, src/, config/, etc.
 COPY . .
 
-# Add vendor/bin to the PATH environment variable
-ENV PATH="/var/www/html/vendor/bin:${PATH}"
-
 # Install dependencies (now that all files, including bin/console, are present)
 # --no-dev should be used for production builds
-RUN composer install --no-dev --no-interaction --optimize-autoloader --no-progress --prefer-dist
+RUN composer install --no-dev --no-interaction --optimize-autoloader --no-progress --prefer-dist --no-scripts
+
+RUN php bin/console cache:clear
+RUN php bin/console assets:install public
 
 # Set ownership and permissions
 # Create necessary log directories for Nginx and ensure www-data can write to them and Symfony's var/cache and var/log
