@@ -25,9 +25,11 @@ WORKDIR /var/www/html
 # This includes composer.json, composer.lock, bin/console, src/, config/, etc.
 COPY . .
 
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 # Install dependencies (now that all files, including bin/console, are present)
 # --no-dev should be used for production builds
-RUN composer install --no-dev --no-interaction --optimize-autoloader --no-progress --prefer-dist --no-scripts
+RUN composer install --no-dev --no-interaction --optimize-autoloader --no-progress --prefer-dist
 
 RUN php bin/console cache:clear
 RUN php bin/console assets:install public
