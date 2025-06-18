@@ -31,8 +31,6 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 # --no-dev should be used for production builds
 RUN composer install --no-dev --no-interaction --optimize-autoloader --no-progress --prefer-dist
 
-RUN php bin/console cache:clear
-RUN php bin/console assets:install public
 
 # Set ownership and permissions
 # Create necessary log directories for Nginx and ensure www-data can write to them and Symfony's var/cache and var/log
