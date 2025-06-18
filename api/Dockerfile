@@ -4,7 +4,6 @@ ARG USER_ID
 ARG GROUP_ID
 ARG APP_ENV
 
-
 ENV APP_ENV=${APP_ENV}
 
 # Install system dependencies for PHP extensions, Nginx, and Supervisor
@@ -33,7 +32,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 # Install dependencies (now that all files, including bin/console, are present)
 # --no-dev should be used for production builds
-RUN composer install --no-dev --no-interaction --optimize-autoloader --no-progress --prefer-dist
+RUN composer install --no-dev --no-interaction --optimize-autoloader --no-progress --prefer-dist --no-scripts
 
 
 # Set ownership and permissions
