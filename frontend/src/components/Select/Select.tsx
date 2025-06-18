@@ -25,6 +25,7 @@ type Props = {
   helper?: string;
   error?: string | null | boolean;
   showColorThemes?: boolean;
+  disabled?: boolean;
 };
 
 export const Select = ({
@@ -36,6 +37,7 @@ export const Select = ({
   helper,
   error,
   showColorThemes,
+  disabled,
 }: Props): ReactElement => {
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
@@ -116,6 +118,7 @@ export const Select = ({
           className={`select-group__control text-preset-4 ${showColorThemes && selectedOption ? "theme-color" : ""} ${error ? "error" : ""}`}
           onClick={toggleDropdown}
           onKeyDown={handleKeyDownControl}
+          disabled={disabled}
         >
           <div>
             {showColorThemes && selectedOption && (

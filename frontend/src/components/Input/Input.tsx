@@ -17,6 +17,7 @@ type Props = {
   error?: string | null | boolean;
   showDollarIcon?: boolean;
   showSearchIcon?: boolean;
+  disabled?: boolean;
 };
 
 export const Input = ({
@@ -29,6 +30,7 @@ export const Input = ({
   onChange,
   placeholder,
   error,
+  disabled,
   showSearchIcon,
   showDollarIcon,
 }: Props): ReactElement => {
@@ -66,6 +68,8 @@ export const Input = ({
           placeholder={placeholder}
           className={`input-group__wrapper--control text-preset-4 ${isPassword || showSearchIcon ? "is-suffix" : ""} ${showDollarIcon ? "is-prefix" : ""} ${hasError ? "input-error" : ""}`}
           aria-invalid={hasError}
+          disabled={disabled}
+          autoComplete="off"
         />
         {isPassword && (
           <button

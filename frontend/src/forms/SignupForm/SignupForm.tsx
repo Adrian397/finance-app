@@ -91,6 +91,7 @@ export const SignupForm = ({ onModeChange }: Props): ReactElement => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           error={fieldErrors.name}
+          disabled={signupMutation.isPending}
         />
         <Input
           type="email"
@@ -99,6 +100,7 @@ export const SignupForm = ({ onModeChange }: Props): ReactElement => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           error={fieldErrors.email}
+          disabled={signupMutation.isPending}
         />
         <Input
           type="password"
@@ -108,6 +110,7 @@ export const SignupForm = ({ onModeChange }: Props): ReactElement => {
           onChange={(e) => setPassword(e.target.value)}
           helper="Passwords must be at least 8 characters"
           error={fieldErrors.password}
+          disabled={signupMutation.isPending}
         />
       </div>
       {Object.keys(fieldErrors).length > 0 && (

@@ -141,6 +141,7 @@ export const AddMoneyModal = ({
           onChange={(e) => setAmount(e.target.value)}
           showDollarIcon
           error={error}
+          disabled={addMoneyMutation.isPending}
         />
         {error && (
           <div className="modal-form-error">

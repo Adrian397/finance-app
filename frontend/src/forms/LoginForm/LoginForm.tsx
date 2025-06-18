@@ -78,6 +78,7 @@ export const LoginForm = ({ onModeChange }: Props): ReactElement => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           error={hasErrorForInputs}
+          disabled={loginMutation.isPending}
         />
         <Input
           type="password"
@@ -87,6 +88,7 @@ export const LoginForm = ({ onModeChange }: Props): ReactElement => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           error={hasErrorForInputs}
+          disabled={loginMutation.isPending}
         />
       </div>
       {generalLoginError && (

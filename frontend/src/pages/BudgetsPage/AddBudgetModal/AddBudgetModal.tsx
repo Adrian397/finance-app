@@ -116,6 +116,7 @@ export const AddBudgetModal = ({ isOpen, onClose, allBudgets }: Props) => {
           options={defaultCategoryOptions}
           id="add-budget-category"
           error={fieldErrors.category}
+          disabled={addBudgetMutation.isPending}
         />
         <Input
           label="Maximum Spend"
@@ -127,6 +128,7 @@ export const AddBudgetModal = ({ isOpen, onClose, allBudgets }: Props) => {
           placeholder="e.g. 2000"
           showDollarIcon
           error={fieldErrors.maximumAmount}
+          disabled={addBudgetMutation.isPending}
         />
         <Select
           label="Theme"
@@ -137,6 +139,7 @@ export const AddBudgetModal = ({ isOpen, onClose, allBudgets }: Props) => {
           options={themeOptionsWithDisabled}
           error={fieldErrors.theme}
           showColorThemes
+          disabled={addBudgetMutation.isPending}
         />
         {Object.keys(fieldErrors).length > 0 && (
           <div className="modal-form-error">

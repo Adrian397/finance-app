@@ -131,6 +131,7 @@ export const EditBudgetModal = ({
           options={defaultCategoryOptions}
           id="edit-budget-category"
           error={fieldErrors.category}
+          disabled={updateBudgetMutation.isPending}
         />
         <Input
           label="Maximum Spend"
@@ -142,6 +143,7 @@ export const EditBudgetModal = ({
           placeholder="e.g. 2000"
           id="edit-maximum-spend"
           error={fieldErrors.maximumAmount}
+          disabled={updateBudgetMutation.isPending}
         />
         <Select
           label="Theme"
@@ -152,6 +154,7 @@ export const EditBudgetModal = ({
           id="edit-budget-theme"
           error={fieldErrors.theme as string}
           showColorThemes
+          disabled={updateBudgetMutation.isPending}
         />
         {Object.keys(fieldErrors).length > 0 && (
           <div className="modal-form-error">

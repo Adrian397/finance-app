@@ -111,6 +111,7 @@ export const AddPotModal = ({
           value={name}
           onChange={(e) => setName(e.target.value)}
           error={fieldErrors.name}
+          disabled={addPotMutation.isPending}
         />
         <Input
           type="number"
@@ -121,6 +122,7 @@ export const AddPotModal = ({
           value={target}
           onChange={(e) => setTarget(e.target.value)}
           error={fieldErrors.targetAmount}
+          disabled={addPotMutation.isPending}
         />
         <Select
           label="Theme"
@@ -130,6 +132,7 @@ export const AddPotModal = ({
           onChange={(newValue) => setTheme(String(newValue))}
           showColorThemes
           error={fieldErrors.theme as string}
+          disabled={addPotMutation.isPending}
         />
         {Object.keys(fieldErrors).length > 0 && (
           <div className="modal-form-error">

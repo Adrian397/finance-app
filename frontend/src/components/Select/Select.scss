@@ -24,6 +24,12 @@
     background-color: transparent;
     position: relative;
 
+    &:disabled {
+      background-color: vars.$gray-100;
+      cursor: not-allowed;
+      border: 1px solid vars.$gray-300;
+    }
+
     &:hover {
       border-color: vars.$gray-500;
     }
