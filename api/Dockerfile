@@ -27,7 +27,7 @@ COPY . .
 
 # Install dependencies (now that all files, including bin/console, are present)
 # --no-dev should be used for production builds
-RUN composer install --no-interaction --optimize-autoloader --no-progress --prefer-dist
+RUN composer install --no-dev --no-interaction --optimize-autoloader --no-progress --prefer-dist
 
 # Set ownership and permissions
 # Create necessary log directories for Nginx and ensure www-data can write to them and Symfony's var/cache and var/log
