@@ -2,6 +2,10 @@ FROM php:8.1-fpm
 
 ARG USER_ID
 ARG GROUP_ID
+ARG APP_ENV
+
+
+ENV APP_ENV=${APP_ENV}
 
 # Install system dependencies for PHP extensions, Nginx, and Supervisor
 RUN apt-get update \
