@@ -41,6 +41,9 @@ RUN mkdir -p /var/log/nginx /var/www/html/var/cache /var/www/html/var/log \
  && chown -R www-data:www-data /var/www/html /var/log/nginx \
  && chmod -R 775 /var/www/html/var/cache /var/www/html/var/log
 
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 EXPOSE 80
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/app.conf"]
