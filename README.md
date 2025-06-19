@@ -4,7 +4,7 @@ A modern, responsive personal finance application designed to help you track tra
 
 Highly encourage you to check out the link above where app is deployed. 
 
-❗ **Since im using a free tier service for my API, first request can take up to 50 seconds due to inactivity. Rest will be immediate.** ❗
+❗ **Since im using a free tier service for my API, first request can take up to 50 seconds due to inactivity. Rest should be immediate.** ❗
 
 ![Design preview for the Personal finance app coding challenge](./preview.jpg)
 
